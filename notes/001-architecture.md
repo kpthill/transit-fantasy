@@ -10,7 +10,9 @@ or a follow-up note.
 Statically-hosted website (GitHub Pages) exhibiting a fantasy transit network
 for California — technologically possible today, ignoring politics and budget.
 Google-Maps-like interface: zoomable searchable map, toggleable overlays for
-~3 variant networks, and point-to-point directions comparing:
+the fantasy network's three tiers (amended 2026-08-05: originally "~3 variant
+networks", now one network of three cooperating tiers — see note 002), and
+point-to-point directions comparing:
 
 - walking
 - current transit
@@ -49,7 +51,7 @@ Google-Maps-like interface: zoomable searchable map, toggleable overlays for
 | Current transit | Purpose-built RAPTOR over Cal-ITP statewide GTFS aggregation. Sample several departure times (e.g. Wed 8:00 / 12:00 / 17:30) and report a representative time; include first-mile access to stops. Not OTP2 (memory, and we only need anchor-to-anchor). |
 | Flying | Modeled: great-circle + cruise speed + climb/descent penalty + fixed overheads (arrive-early, security, taxi-out/in, deplane). Restricted to airport pairs with plausible commercial service; + taxi legs to/from airports. |
 | Walking | No matrix needed at state scale: distance × walking speed × road detour factor; only relevant for short trips (live local computation path). |
-| Fantasy network(s) | Timetable-free frequency model (proposed — see open questions): in-vehicle time from alignment geometry + speed profile, plus wait = headway/2, plus transfer penalties. One matrix per variant. |
+| Fantasy network | Timetable-free frequency model: in-vehicle time from alignment geometry + integrated speed profile (accel/braking curves, dwell, throat penalty), wait = headway/2 (or timed-transfer offset), transfer penalties. ONE matrix over the combined three-tier network (amended 2026-08-05 — tiers cooperate, they are not variants). Tier-1 grid legs computed analytically (Manhattan distance, closed form), not routed over drawn geometry. |
 
 ## Frontend
 
