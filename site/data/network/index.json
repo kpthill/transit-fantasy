@@ -30,9 +30,15 @@
       "name": "Urban Metro",
       "color": "#009E73",
       "files": [
-        "tier1-sf.geojson",
         "tier1-eastbay.geojson",
-        "tier1-la.geojson"
+        "tier1-fresno.geojson",
+        "tier1-la.geojson",
+        "tier1-longbeach.geojson",
+        "tier1-oc.geojson",
+        "tier1-sacramento.geojson",
+        "tier1-sandiego.geojson",
+        "tier1-sanjose.geojson",
+        "tier1-sf.geojson"
       ]
     }
   ]
