@@ -26,6 +26,27 @@ html, body { margin: 0; height: 100%; font-family: system-ui, -apple-system, san
   display: inline-block; width: 18px; height: 4px; border-radius: 2px;
 }
 
+#directions-panel {
+  position: absolute; bottom: 24px; left: 10px; z-index: 2;
+  background: rgba(255, 255, 255, 0.95); border-radius: 8px;
+  padding: 10px 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  width: 320px; max-height: 60vh; overflow-y: auto;
+}
+#directions-panel h2 { margin: 0 0 6px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #444; }
+.dir-row { display: flex; gap: 8px; align-items: center; margin: 4px 0; font-size: 0.8rem; }
+.dir-row button, #go {
+  font-size: 0.8rem; padding: 4px 8px; border: 1px solid #bbb; border-radius: 5px;
+  background: #f7f7f7; cursor: pointer;
+}
+.dir-row button.armed { background: #0072B2; color: #fff; }
+#go { width: 100%; margin-top: 6px; font-weight: 600; }
+#go:disabled { opacity: 0.5; cursor: default; }
+#results { margin-top: 8px; font-size: 0.82rem; }
+.result { display: flex; justify-content: space-between; padding: 3px 0; border-top: 1px solid #eee; }
+.result.highlight { font-weight: 700; color: #00694d; }
+.result .note { color: #888; font-size: 0.72rem; }
+.legs { margin: 2px 0 6px; padding-left: 14px; color: #555; font-size: 0.75rem; }
+
 .maplibregl-popup-content { font-size: 0.85rem; line-height: 1.4; }
 .maplibregl-popup-content h3 { margin: 0 0 4px; font-size: 0.95rem; }
 .maplibregl-popup-content .meta { color: #666; font-size: 0.78rem; }

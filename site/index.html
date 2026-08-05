@@ -17,6 +17,13 @@
     <h2>Layers</h2>
     <div id="layer-toggles"></div>
   </aside>
+  <aside id="directions-panel">
+    <h2>Directions</h2>
+    <div class="dir-row"><button id="set-origin">Set origin</button><span id="origin-label">click map…</span></div>
+    <div class="dir-row"><button id="set-dest">Set destination</button><span id="dest-label">click map…</span></div>
+    <button id="go" disabled>Compare travel times</button>
+    <div id="results"></div>
+  </aside>
   <script src="vendor/maplibre-gl.js"></script>
   <script type="module" src="js/app.js"></script>
 </body>

@@ -158,6 +158,72 @@ function addToggle(group, layerIds) {
   container.append(label);
 }
 
+// --- directions UI ---------------------------------------------------
+import('./directions.js').then(({ directions }) => {
+  const pts = { origin: null, dest: null };
+  let arming = null;
+  const markers = {};
+  const fmt = (m) => m >= 90 ? `${Math.floor(m / 60)} h ${Math.round(m % 60)} min` : `${Math.round(m)} min`;
+
+  function arm(which, btn) {
+    arming = which;
+    document.querySelectorAll('.dir-row button').forEach((b) => b.classList.remove('armed'));
+    btn.classList.add('armed');
+  }
+  document.getElementById('set-origin').addEventListener('click', (e) => arm('origin', e.target));
+  document.getElementById('set-dest').addEventListener('click', (e) => arm('dest', e.target));
+
+  map.on('click', (e) => {
+    if (!arming) return;
+    pts[arming] = { lon: e.lngLat.lng, lat: e.lngLat.lat };
+    document.getElementById(arming === 'origin' ? 'origin-label' : 'dest-label').textContent =
+      `${e.lngLat.lat.toFixed(3)}, ${e.lngLat.lng.toFixed(3)}`;
+    if (markers[arming]) markers[arming].remove();
+    markers[arming] = new maplibregl.Marker({ color: arming === 'origin' ? '#009E73' : '#D55E00' })
+      .setLngLat(e.lngLat).addTo(map);
+    document.querySelectorAll('.dir-row button').forEach((b) => b.classList.remove('armed'));
+    arming = null;
+    document.getElementById('go').disabled = !(pts.origin && pts.dest);
+  });
+
+  document.getElementById('go').addEventListener('click', async () => {
+    const el = document.getElementById('results');
+    el.innerHTML = 'computing…';
+    try {
+      const res = await directions(pts.origin, pts.dest);
+      el.innerHTML = '';
+      for (const r of res) {
+        const div = document.createElement('div');
+        div.className = 'result' + (r.highlight ? ' highlight' : '');
+        div.innerHTML = `<span>${r.mode}</span><span>${fmt(r.minutes)}</span>`;
+        el.append(div);
+        if (r.note) {
+          const n = document.createElement('div');
+          n.className = 'note';
+          n.textContent = r.note;
+          el.append(n);
+        }
+        if (r.legs) {
+          const ul = document.createElement('ul');
+          ul.className = 'legs';
+          for (const l of r.legs) {
+            const li = document.createElement('li');
+            const dest = l.to === 'destination' ? 'destination' : (l.to.split(':')[1] || l.to);
+            li.textContent = l.type === 'ride'
+              ? `${l.line} → ${dest} (${fmt(l.min)}${l.stops ? `, ${l.stops} stops` : ''})`
+              : `${l.type} → ${dest} (${fmt(l.min)})`;
+            ul.append(li);
+          }
+          el.append(ul);
+        }
+      }
+    } catch (err) {
+      el.textContent = `error: ${err.message}`;
+      console.error(err);
+    }
+  });
+});
+
 map.on('load', async () => {
   const index = await fetchJson('data/network/index.json');
   for (const group of index.groups) {
