@@ -18,11 +18,10 @@ from pathlib import Path
 import requests
 
 ROOT = Path(__file__).resolve().parent.parent
-CACHE = ROOT / "pipeline" / "cache" / "sf_streets.json"
+CACHE_DIR = ROOT / "pipeline" / "cache"
 NETWORK_DIR = ROOT / "network"
-OUT = ROOT / "site" / "data" / "network" / "tier1-sf.geojson"
+OUT_DIR = ROOT / "site" / "data" / "network"
 
-BBOX = (37.703, -122.525, 37.815, -122.350)  # south, west, north, east
 OVERPASS_MIRRORS = [
     "https://overpass-api.de/api/interpreter",
     "https://overpass.kumi.systems/api/interpreter",
@@ -35,67 +34,26 @@ UA = {"User-Agent": "ca-fantasy-transit/0.1 (github.com/kpthill/transit-fantasy)
 # Kevin 2026-08-05: paint the line wherever the tunnel goes, lines must
 # cross Twin Peaks etc., not die at the hills). A part is a list of OSM
 # street names, optionally with a bbox (s, w, n, e) to disambiguate.
-def P(names, bbox=None):
-    return {"names": names if isinstance(names, list) else [names], "bbox": bbox}
-
-
-def PTS(points):
-    """Literal coordinate part (e.g. an extension to a hub off any street)."""
-    return {"points": points}
-
-CORRIDORS = [
-    # East–west, full width of the city where terrain-sensible
-    ("Geary",      "ew", [P("Point Lobos Avenue"), P("Geary Boulevard"), P("Geary Street"),
-                          PTS([[-122.3927, 37.7897]])]),  # extend to Transbay hub
-    ("Fulton",     "ew", [P("Fulton Street")]),
-    ("Judah",      "ew", [P("Judah Street"), P("Duboce Avenue")]),          # Sunset Tunnel
-    ("Taraval",    "ew", [P("Taraval Street"), P("West Portal Avenue"),
-                          P("Castro Street", (37.760, -122.437, 37.7627, -122.433))]),  # Twin Peaks Tunnel to Castro/Market
-    ("Vicente–24th", "ew", [P("Vicente Street"), P("24th Street")]),  # Mt Davidson tunnel
-    ("Ocean",      "ew", [P("Ocean Avenue"), P("Geneva Avenue")]),
-    ("California", "ew", [P("California Street")]),
-    ("Union",      "ew", [P("Union Street")]),
-    ("Market",     "ew", [P("Portola Drive"), P("Market Street")]),
-    ("16th St",    "ew", [P("Parnassus Avenue"), P("16th Street")]),        # Corona Heights tunnel
-    # North–south
-    ("Sunset",     "ns", [P("Sunset Boulevard"), P("36th Avenue", (37.771, -122.51, 37.79, -122.49))]),
-    ("9th Ave",    "ns", [P("9th Avenue")]),
-    ("19th Ave",   "ns", [P("19th Avenue"), P("Park Presidio Boulevard")]),
-    ("Masonic",    "ns", [P("Clayton Street"), P("Masonic Avenue"), P("Presidio Avenue")]),
-    ("Divisadero", "ns", [P("San Jose Avenue", (37.703, -122.46, 37.742, -122.42)),
-                          P("Castro Street", (37.741, -122.44, 37.769, -122.43)),
-                          P("Divisadero Street")]),
-    ("Fillmore",   "ns", [P("Church Street"), P("Fillmore Street")]),
-    ("Van Ness",   "ns", [P("South Van Ness Avenue"), P("Van Ness Avenue")]),
-    ("Polk",       "ns", [P("Polk Street")]),
-    ("Mission",    "ns", [P("Mission Street")]),
-    ("Stockton",   "ns", [P("4th Street", (37.768, -122.41, 37.79, -122.39)), P("Stockton Street")]),
-    ("Columbus",   "ns", [P("3rd Street"),
-                          P("Kearny Street", (37.786, -122.4065, 37.7962, -122.4000)),
-                          P("Columbus Avenue")]),
-    ("Potrero",    "ns", [P("Bayshore Boulevard", (37.703, -122.42, 37.75, -122.39)),
-                          P("Potrero Avenue"), P("10th Street", (37.768, -122.42, 37.78, -122.40))]),
-    ("Embarcadero", "ns", [P("The Embarcadero")]),
-]
+from cities import CITIES  # noqa: E402
 
 BUCKET_M = 60.0  # centerline resolution along the principal axis
 
 
-def all_names() -> list[str]:
-    return sorted({n for _, _, parts in CORRIDORS for p in parts for n in p.get("names", [])})
+def all_names(corridors) -> list[str]:
+    return sorted({n for _, _, parts in corridors for p in parts for n in p.get("names", [])})
 
 
-def fetch_streets() -> dict:
+def fetch_streets(cfg) -> dict:
     import hashlib
-    names = all_names()
+    names = all_names(cfg["corridors"])
     key = hashlib.md5("|".join(names).encode()).hexdigest()[:12]
-    cache = CACHE.with_name(f"sf_streets_{key}.json")
+    cache = CACHE_DIR / f"{cfg['slug']}_streets_{key}.json"
     if cache.exists():
         return json.loads(cache.read_text())
     regex = "^(" + "|".join(n.replace(" ", "\\\\ ") for n in names) + ")$"
     # Overpass regex doesn't need space escaping; keep names verbatim.
     regex = "^(" + "|".join(names) + ")$"
-    s, w, n, e = BBOX
+    s, w, n, e = cfg["bbox"]
     query = f"""
 [out:json][timeout:120];
 way["highway"]["name"~"{regex}"]({s},{w},{n},{e});
@@ -122,17 +80,15 @@ out geom;
     return data
 
 
+_REF = {"cos": math.cos(math.radians(37.76))}
+
+
 def mercator(lon: float, lat: float) -> tuple[float, float]:
-    # local meters approximation around SF
-    x = lon * 111320 * math.cos(math.radians(37.76))
-    y = lat * 110540
-    return x, y
+    return lon * 111320 * _REF["cos"], lat * 110540
 
 
 def inv_mercator(x: float, y: float) -> tuple[float, float]:
-    lon = x / (111320 * math.cos(math.radians(37.76)))
-    lat = y / 110540
-    return lon, lat
+    return x / (111320 * _REF["cos"]), y / 110540
 
 
 def principal_axis(points: list[tuple[float, float]]) -> tuple[float, float]:
@@ -192,8 +148,12 @@ def crossings(a: list, b: list):
     return None
 
 
-def main() -> None:
-    data = fetch_streets()
+def main(cfg) -> None:
+    _REF["cos"] = math.cos(math.radians(cfg["center_lat"]))
+    BBOX = cfg["bbox"]
+    CORRIDORS = cfg["corridors"]
+    OUT = OUT_DIR / f"tier1-{cfg['slug']}.geojson"
+    data = fetch_streets(cfg)
     by_name: dict[str, list[list[tuple[float, float]]]] = {}
     for el in data["elements"]:
         if el["type"] != "way" or "geometry" not in el:
@@ -366,16 +326,19 @@ def main() -> None:
             if best[0] > 350:
                 continue
             i = best[1]
-            # drop vertices within 200 m of the hub, insert hub after seg start
-            newline = []
-            for k, p in enumerate(line):
-                if math.hypot(lm[k][0] - hx, lm[k][1] - hy) <= 200:
-                    continue
-                newline.append(p)
-                if k == i:
-                    newline.append((hlon, hlat))
-            if (hlon, hlat) not in newline:
-                newline.insert(min(i + 1, len(newline)), (hlon, hlat))
+            # insert the hub at its arc position (drop vertices within 200 m)
+            arcs, acc = [0.0], 0.0
+            for k in range(1, len(lm)):
+                acc += math.hypot(lm[k][0] - lm[k - 1][0], lm[k][1] - lm[k - 1][1])
+                arcs.append(acc)
+            _, t = seg_dist_t((hx, hy), lm[i], lm[i + 1])
+            seg = math.hypot(lm[i + 1][0] - lm[i][0], lm[i + 1][1] - lm[i][1])
+            hub_arc = arcs[i] + t * seg
+            keep = [k for k in range(len(line))
+                    if math.hypot(lm[k][0] - hx, lm[k][1] - hy) > 200]
+            head = [line[k] for k in keep if arcs[k] < hub_arc]
+            tail = [line[k] for k in keep if arcs[k] >= hub_arc]
+            newline = head + [(hlon, hlat)] + tail
             lines[label] = (orient, newline)
             line = newline
             hub_marks.append((label, name, hlon, hlat))
@@ -530,7 +493,7 @@ def main() -> None:
         features.append({
             "type": "Feature",
             "geometry": {"type": "LineString", "coordinates": [[round(x, 6), round(y, 6)] for x, y in line]},
-            "properties": {"ftype": "line", "id": f"sf-{label}", "name": f"{label} Line", "tier": 1,
+            "properties": {"ftype": "line", "id": f"{cfg['slug']}-{label}", "name": f"{label} Line", "tier": 1,
                            "headway": "90 s"},
         })
 
@@ -538,8 +501,11 @@ def main() -> None:
     OUT.write_text(json.dumps({"type": "FeatureCollection", "features": features}) + "\n")
     n_lines = sum(1 for f in features if f["properties"]["ftype"] == "line")
     n_sta = len(features) - n_lines
-    print(f"tier1-sf.geojson: {n_lines} lines, {n_sta} stations")
+    print(f"{OUT.name}: {n_lines} lines, {n_sta} stations")
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    keys = sys.argv[1:] or list(CITIES)
+    for k in keys:
+        main(CITIES[k])
