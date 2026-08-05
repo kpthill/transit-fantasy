@@ -60,8 +60,7 @@ CORRIDORS = [
     # North–south
     ("Sunset",     "ns", [P("Sunset Boulevard"), P("36th Avenue", (37.771, -122.51, 37.79, -122.49))]),
     ("9th Ave",    "ns", [P("9th Avenue")]),
-    ("19th Ave",   "ns", [P("Junipero Serra Boulevard", (37.703, -122.48, 37.735, -122.46)),
-                          P("19th Avenue"), P("Park Presidio Boulevard")]),
+    ("19th Ave",   "ns", [P("19th Avenue"), P("Park Presidio Boulevard")]),
     ("Masonic",    "ns", [P("Clayton Street"), P("Masonic Avenue"), P("Presidio Avenue")]),
     ("Divisadero", "ns", [P("San Jose Avenue", (37.703, -122.46, 37.742, -122.42)),
                           P("Castro Street", (37.741, -122.44, 37.769, -122.43)),
@@ -71,7 +70,9 @@ CORRIDORS = [
     ("Polk",       "ns", [P("Polk Street")]),
     ("Mission",    "ns", [P("Mission Street")]),
     ("Stockton",   "ns", [P("4th Street", (37.768, -122.41, 37.79, -122.39)), P("Stockton Street")]),
-    ("Columbus",   "ns", [P("3rd Street"), P("Kearny Street"), P("Columbus Avenue")]),
+    ("Columbus",   "ns", [P("3rd Street"),
+                          P("Kearny Street", (37.786, -122.4065, 37.7962, -122.4000)),
+                          P("Columbus Avenue")]),
     ("Potrero",    "ns", [P("Bayshore Boulevard", (37.703, -122.42, 37.75, -122.39)),
                           P("Potrero Avenue"), P("10th Street", (37.768, -122.42, 37.78, -122.40))]),
     ("Embarcadero", "ns", [P("The Embarcadero")]),
@@ -434,15 +435,41 @@ def main() -> None:
                 side = "South" if lat == min(line[0][1], line[-1][1]) else "North"
             add_station(lon, lat, f"{lb} {side} Terminal", [lb])
 
+    # Snap line ends exactly onto their end station so no spur extends past
+    # the last stop (station merging can otherwise leave a ~200 m tail).
+    station_feats = [s for s in features if s["properties"]["ftype"] == "station"]
+    for lb, (orient, line) in list(lines.items()):
+        changed = False
+        for endidx in (0, -1):
+            ex, ey = mercator(*line[endidx])
+            best = min(station_feats,
+                       key=lambda s: math.hypot(*(a - b for a, b in
+                           zip(mercator(*s["geometry"]["coordinates"]), (ex, ey)))))
+            bx, by = mercator(*best["geometry"]["coordinates"])
+            d = math.hypot(bx - ex, by - ey)
+            if 1 < d <= 300:
+                coord = tuple(best["geometry"]["coordinates"])
+                # drop end vertices closer than the station to avoid micro-spikes
+                while len(line) > 2:
+                    nxt = line[1] if endidx == 0 else line[-2]
+                    nx, ny = mercator(*nxt)
+                    if math.hypot(nx - bx, ny - by) < d * 0.7:
+                        line = line[1:] if endidx == 0 else line[:-1]
+                    else:
+                        break
+                line = ([coord] + line[1:]) if endidx == 0 else (line[:-1] + [coord])
+                changed = True
+        if changed:
+            lines[lb] = (orient, line)
+
     # Sanity: report any remaining dangling ends
-    stations_m = [mercator(*s.get("geometry", {}).get("coordinates"))
-                  for s in features if s["properties"]["ftype"] == "station"]
+    stations_m = [mercator(*s["geometry"]["coordinates"]) for s in station_feats]
     for lb, (_, line) in lines.items():
         for end in (line[0], line[-1]):
             ex, ey = mercator(*end)
             d = min(math.hypot(ex - sx, ey - sy) for sx, sy in stations_m)
-            if d > 300:
-                print(f"WARNING: {lb} line end still {d:.0f} m from nearest station")
+            if d > 50:
+                print(f"WARNING: {lb} line end {d:.0f} m from nearest station")
 
     for label, (orient, line) in lines.items():
         features.append({
