@@ -25,7 +25,15 @@ curves.
   geometry.
 - Mountain crossings: long tunnels are fine (well-proven — Gotthard class),
   but where geometry forces surface alignment, speeds drop realistically.
-- Urban approaches: realistic slow running into terminal areas.
+- Urban approaches (amended 2026-08-05): **no blanket urban slow running.**
+  Today's crawl into cities is a consequence of underinvestment (legacy shared
+  curvy tracks, noise limits, grade crossings) — all bought away by premise via
+  dedicated grade-separated approaches, walls, and deep urban tunnels
+  (200–250+ km/h in-tunnel is well-proven). What remains is physics only:
+  stopping trains follow a realistic braking/acceleration curve (~6–8 km to
+  brake from 300 km/h), and the final ~2 km terminal throat runs at
+  ~60–100 km/h through switches — a 1–2 minute cost per stop, not a crawl.
+  Through-trains keep line speed past metros they don't serve.
 - Standard well-proven kit is all allowed: full electrification, tilting
   trains, high-frequency signaling (ETCS-class), timed cross-platform
   transfers.
