@@ -1,6 +1,6 @@
 # 004 — Project spec (v1, for Kevin's review)
 
-Status: DRAFT pending Kevin's sign-off. Once approved, this is the contract
+Status: APPROVED 2026-08-05 (with amendments below marked "amended"). Once approved, this is the contract
 for autonomous building. Notes 001–003 remain the decision history; this
 spec consolidates them and pins the remaining technical calls. Conflicts
 resolve in favor of this spec; future deviations get documented here or in
@@ -87,11 +87,23 @@ Budgets: no file ≥ 50 MB, total repo < 500 MB target.
 
 ### 3.2 Anchors
 
-~2,500–3,000 anchor points: all incorporated places, CDPs ≥ ~1,000 pop,
-commercial airports (FAA-listed with scheduled service), all tier-2/3
-stations and gateway stations, and major current-transit hubs. Tier-1
-stations are NOT anchors (handled analytically). Shipped eagerly as
-`data/anchors.json` (~150 KB gz): id, name, lat/lon, kind, shard ref.
+~3,000–4,500 anchor points (amended 2026-08-05): all incorporated places,
+CDPs ≥ ~1,000 pop, commercial airports (FAA-listed with scheduled
+service), all tier-2/3 stations and gateway stations, and — densified so
+that intra-metro commute queries work — current-transit rail/BRT/ferry
+stops and major bus hubs inside urbanized areas (BART, Muni Metro, LA
+Metro, VTA, SacRT, SDMTS, etc.). Without these a city like SF would have
+one anchor and intra-city current-transit comparisons would be garbage;
+with them, a Sunset→downtown query snaps to nearby Muni stops and reads
+the RAPTOR matrix between them. Tier-1 *fantasy* stations are still NOT
+anchors (handled analytically). Matrix budget at 4.5k anchors: ~40 MB ×3,
+row shards ~27 KB — still within limits. Shipped eagerly as
+`data/anchors.json`: id, name, lat/lon, kind, shard ref.
+
+Per-mode local fallback (clarification): for endpoints within ~15 km,
+walk/drive are computed locally, but current transit still goes through
+hub anchors (a local transit estimate would be fiction), and the fantasy
+mode always uses the live network router + analytic grids.
 
 ### 3.3 Precomputed matrices (baseline modes only)
 
@@ -237,7 +249,8 @@ calls. M1 is a review checkpoint; after that, autonomous through M4.
 - notes/ stays the decision log; judgment calls made autonomously get a
   dated entry (new note or amendment) — silence is never a decision.
 - Data wins over the 003 sketch; surprises get flagged, not buried.
-- No PRs unless requested; work stays on the designated branch.
+- No PRs unless requested. Work happens on `main` with frequent commits
+  (amended 2026-08-05 — Kevin: sole-author repo, main is fine).
 - Anything requiring Kevin: enabling GitHub Pages for the repo when M1 is
   ready to deploy (Settings → Pages → deploy from Actions), and the
   site's final name. Everything else proceeds autonomously.
