@@ -114,6 +114,18 @@ this place?" Visitor-heavy, job-light destinations are handled explicitly
 - **Tier 2**: serves urbanized areas ≥ ~15–20k on or near a defensible
   corridor. Stop spacing 10–15 km in metro regions, wider across rural
   gaps. Every tier-2 station in a gridded city is also a tier-1 node.
+- **Gateway rule** (added 2026-08-05): major out-of-city attractions —
+  national/state parks, resort regions, wine country — get a tier-2 branch
+  to a **gateway station** when (a) annual visitation ≥ ~1M and (b) a
+  terrain-feasible corridor exists (historical rail precedent counts as
+  proof). Rail stops at the gateway/edge; circulation beyond it is by
+  park shuttle (assumed, unmodeled — like local buses; engine access legs
+  from gateway remain walk/taxi). No rail into fragile interiors or over
+  passes that would demand geological study — that's magic-tunnel
+  territory and gateways don't rate magic. Seasonal demand is fine:
+  autonomous short trains keep frequency decent off-season (same argument
+  as tier-1 capacity scaling). Gateway destinations are included in the
+  geocoder and anchor set so directions to e.g. "Yosemite Valley" work.
 - **Tier 3**: metro areas ≥ ~400–500k; city-center stations; typical
   spacing ≥ 50 km; always co-located with a tier-2 hub.
 - **Frequencies**: T1 90–120 s; T2 10 min on metro trunks, 15–30 min on

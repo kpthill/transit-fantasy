@@ -46,9 +46,25 @@ beaches, fairgrounds, convention centers.
   Barbara–Ventura; Santa Cruz–Watsonville. 200 km/h segments, no HSR.
 - **Mountain/desert**: Sac–Auburn–Truckee/Tahoe (Donner — existing rail,
   no magic); Bakersfield–Mojave–Lancaster; Coachella–El Centro–Calexico.
+- **Gateway branches** (per 002 gateway rule, ≥ ~1M visitors + feasible
+  corridor):
+  - **South Lake Tahoe**: Sacramento–Placerville–South Lake Tahoe (US-50
+    corridor); north shore already reached via Truckee/Donner.
+  - **Yosemite**: Merced–Mariposa–El Portal on the historical Yosemite
+    Valley RR alignment; shuttle into the Valley.
+  - **Sequoia/Kings Canyon**: Visalia–Three Rivers gateway; the Generals
+    Highway climb stays road/shuttle.
+  - **Napa/Sonoma wine country**: Vallejo–Napa–St. Helena–Calistoga branch
+    (rail existed; Wine Train survives), plus Santa Rosa–Sonoma spur.
+  - **Joshua Tree**: modest desert branch or stop off the Coachella line
+    (Palm Springs side gateway); easy terrain, borderline — lean yes.
+  - **Rejected/flagged no**: Death Valley (too remote, visitation
+    marginal), Lassen (~500k visitors, below bar), Big Sur (terrain,
+    keep Monterey/Carmel on coast line), Big Bear (7,000 ft climb, no
+    precedent — geological-study territory), Mammoth/US-395 (nothing to
+    chain a 250 km isolated mountain line to).
 - **Flagged judgment calls**: Eureka line (weakest corridor in the state;
-  leaning yes on 50-years-of-investment grounds); Merced–Yosemite gateway
-  branch (historical precedent — Yosemite Valley RR; fun, low ridership).
+  leaning yes on 50-years-of-investment grounds).
 
 ## Tier 3 HSR (~1,300–1,500 km): backbone + three limbs, not a mesh
 
