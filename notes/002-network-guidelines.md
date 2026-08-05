@@ -71,20 +71,46 @@ Modeling decision (Claude): tier-1 grids are drawn as real lines on the map
 Manhattan distance over the grid, closed-form stop penalty, ≤ 1 transfer —
 rather than by routing over the drawn geometry.
 
-### Placement heuristics (PROPOSED — pending Kevin's reaction)
+### Placement heuristics (DECIDED 2026-08-05)
 
 Guiding test: politics and cost ignored, but the result should be something
 that in the most ideal world might actually get built. No station within a
-5-minute walk of every suburban home.
+5-minute walk of every suburban home. Density (people + jobs, via Census +
+LODES) is the primary gate but is only a proxy for **transit desirability**:
+"how many people would want to take a train to within walking distance of
+this place?" Visitor-heavy, job-light destinations are handled explicitly
+(see highlights).
 
-- **Tier 1**: gated by density within each Census urbanized area.
-  - ≥ ~4,000 people+jobs/km² sustained: full 1-km grid.
-  - ~2,000–4,000/km²: coarser 2-km grid or arterial corridor lines.
-  - Below: no tier 1 — access by taxi/bus/bike to nearest station.
+- **Tier 1, dense core — the grid**: full grid where sustained density
+  ≥ ~4,000 people+jobs/km² within a Census urbanized area.
+  - 1-km station spacing is a *guideline*, not a rule. The principle is
+    "densely connected, not hub-and-spoke." Geometry deforms to follow
+    arterials and terrain; stations slide off the lattice to land on
+    squares, shopping centers, parks, campuses, and transfer points.
   - Urbanized area < ~50k population: no tier 1 (tier-2 station only);
     ~50–150k: single spine line; larger: grid scaled to dense footprint.
-  - Grid geometry deforms to follow arterials/terrain; ~1 km spacing is the
-    invariant, not geometric purity.
+- **Tier 1, medium density — corridors + highlights** (replaces the earlier
+  2-km-grid proposal, rejected: at 2-km spacing worst-case walks exceed
+  comfortable distance, mesh topology only pays off under dense isotropic
+  demand, and a mesh through single-family sprawl fails the
+  might-actually-get-built test):
+  - In ~2,000–4,000/km² fabric: **arterial corridor lines**, stations every
+    ~1.5–2 km, whose jobs are to (a) connect dense-core grids to each
+    other, (b) reach designated highlights, (c) leave no substantial
+    medium-density blob without a line through its middle.
+  - **Highlights**: an explicit destination list for visitor-heavy,
+    job-light places the jobs data misses — theme parks, stadiums,
+    university campuses, beaches/major parks, fairgrounds, convention
+    centers. Each gets a station on a corridor line or a short spur to the
+    nearest grid / tier-2 hub. (Employment centers — office campuses,
+    malls, warehouse districts — are already captured by the jobs term in
+    the density gate.)
+  - **Park-and-rides** at edge-of-network stations near freeway junctions.
+    (Stretch: exposes a drive-to-transit hybrid mode in the directions
+    engine nearly for free.)
+  - Below ~2,000/km² and away from highlights: no rail. Local bus service
+    is assumed to exist but is not modeled; directions-engine access legs
+    remain walk/taxi.
 - **Tier 2**: serves urbanized areas ≥ ~15–20k on or near a defensible
   corridor. Stop spacing 10–15 km in metro regions, wider across rural
   gaps. Every tier-2 station in a gridded city is also a tier-1 node.
@@ -93,9 +119,3 @@ that in the most ideal world might actually get built. No station within a
 - **Frequencies**: T1 90–120 s; T2 10 min on metro trunks, 15–30 min on
   branches; T3 15–30 min per corridor. Timed transfers wherever the
   connecting service runs less often than ~every 10 min.
-
-### Open questions
-
-1. Tier-1 floor & the 2-km coarse-grid compromise: in-spirit, or prefer
-   "1-km grid or nothing" with a smaller footprint?
-2. Confirm deformed-grid geometry (follow arterials, keep spacing) is fine.
