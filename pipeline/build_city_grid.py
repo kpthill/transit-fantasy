@@ -46,13 +46,12 @@ def all_names(corridors) -> list[str]:
 def fetch_streets(cfg) -> dict:
     import hashlib
     names = all_names(cfg["corridors"])
-    key = hashlib.md5("|".join(names).encode()).hexdigest()[:12]
+    key = hashlib.md5(("v2|" + "|".join(names)).encode()).hexdigest()[:12]
     cache = CACHE_DIR / f"{cfg['slug']}_streets_{key}.json"
     if cache.exists():
         return json.loads(cache.read_text())
-    regex = "^(" + "|".join(n.replace(" ", "\\\\ ") for n in names) + ")$"
-    # Overpass regex doesn't need space escaping; keep names verbatim.
-    regex = "^(" + "|".join(names) + ")$"
+    # Optional directional prefix (LA-style "South Vermont Avenue")
+    regex = "^((North|South|East|West) )?(" + "|".join(names) + ")$"
     s, w, n, e = cfg["bbox"]
     query = f"""
 [out:json][timeout:120];
@@ -158,7 +157,11 @@ def main(cfg) -> None:
     for el in data["elements"]:
         if el["type"] != "way" or "geometry" not in el:
             continue
-        name = el.get("tags", {}).get("name")
+        name = el.get("tags", {}).get("name", "")
+        for pref in ("North ", "South ", "East ", "West "):
+            if name.startswith(pref):
+                name = name[len(pref):]
+                break
         coords = [(g["lon"], g["lat"]) for g in el["geometry"]]
         by_name.setdefault(name, []).append(coords)
 

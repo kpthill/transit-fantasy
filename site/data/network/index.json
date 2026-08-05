@@ -31,7 +31,8 @@
       "color": "#009E73",
       "files": [
         "tier1-sf.geojson",
-        "tier1-eastbay.geojson"
+        "tier1-eastbay.geojson",
+        "tier1-la.geojson"
       ]
     }
   ]
