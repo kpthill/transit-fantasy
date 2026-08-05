@@ -1,0 +1,31 @@
+{
+  "tier": 2,
+  "stations": {
+    "san-jose":      {"name": "San Jose Diridon",  "coord": [-121.9026, 37.3297]},
+    "gilroy":        {"name": "Gilroy",            "coord": [-121.5683, 37.0058]},
+    "salinas":       {"name": "Salinas",           "coord": [-121.6550, 36.6780]},
+    "soledad":       {"name": "Soledad",           "coord": [-121.3260, 36.4250]},
+    "paso-robles":   {"name": "Paso Robles",       "coord": [-120.6900, 35.6300]},
+    "slo":           {"name": "San Luis Obispo",   "coord": [-120.6600, 35.2800]},
+    "santa-maria":   {"name": "Santa Maria",       "coord": [-120.4360, 34.9500]},
+    "buellton":      {"name": "Buellton/Solvang",  "coord": [-120.1920, 34.6140]},
+    "goleta":        {"name": "Goleta",            "coord": [-119.8300, 34.4400]},
+    "santa-barbara": {"name": "Santa Barbara",     "coord": [-119.7000, 34.4200]},
+    "marina":        {"name": "Marina",            "coord": [-121.8000, 36.6800]},
+    "monterey":      {"name": "Monterey",          "coord": [-121.8950, 36.6000]},
+    "santa-cruz":    {"name": "Santa Cruz",        "coord": [-122.0260, 36.9720]},
+    "watsonville":   {"name": "Watsonville",       "coord": [-121.7600, 36.9100]}
+  },
+  "lines": [
+    {"id": "rx-centralcoast", "name": "RX Central Coast (San Jose–Santa Barbara)", "headway": "30 min",
+     "route": [{"station": "san-jose"}, {"station": "gilroy"}, {"station": "salinas"},
+               {"station": "soledad"}, {"station": "paso-robles"}, {"station": "slo"},
+               {"station": "santa-maria"}, {"station": "buellton"}, {"station": "goleta"},
+               {"station": "santa-barbara"}]},
+    {"id": "rx-monterey", "name": "RX Monterey (Salinas–Monterey)", "headway": "15 min",
+     "route": [{"station": "salinas"}, {"station": "marina"}, {"station": "monterey"}]},
+    {"id": "rx-santacruz", "name": "RX Santa Cruz (San Jose–Salinas)", "headway": "15 min",
+     "route": [{"station": "san-jose"}, {"station": "santa-cruz"}, {"station": "watsonville"},
+               {"station": "salinas"}]}
+  ]
+}

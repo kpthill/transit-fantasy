@@ -1,0 +1,32 @@
+{
+  "tier": 2,
+  "stations": {
+    "oceanside":    {"name": "Oceanside",          "coord": [-117.3790, 33.1940]},
+    "carlsbad":     {"name": "Carlsbad",           "coord": [-117.3500, 33.1600]},
+    "encinitas":    {"name": "Encinitas",          "coord": [-117.2920, 33.0450]},
+    "solana-beach": {"name": "Solana Beach",       "coord": [-117.2710, 32.9910]},
+    "ucsd":         {"name": "UCSD/La Jolla",      "coord": [-117.2200, 32.8700]},
+    "old-town":     {"name": "Old Town",           "coord": [-117.1990, 32.7540]},
+    "san-diego":    {"name": "San Diego Santa Fe", "coord": [-117.1696, 32.7157]},
+    "miramar":      {"name": "Miramar",            "coord": [-117.1400, 32.8900]},
+    "rancho-bern":  {"name": "Rancho Bernardo",    "coord": [-117.0800, 33.0200]},
+    "escondido":    {"name": "Escondido",          "coord": [-117.0864, 33.1192]},
+    "la-mesa":      {"name": "La Mesa",            "coord": [-117.0230, 32.7680]},
+    "el-cajon":     {"name": "El Cajon",           "coord": [-116.9620, 32.7950]},
+    "chula-vista":  {"name": "Chula Vista",        "coord": [-117.0840, 32.6400]},
+    "san-ysidro":   {"name": "San Ysidro/Tijuana", "coord": [-117.0430, 32.5520]}
+  },
+  "lines": [
+    {"id": "rx-sd-coastal", "name": "RX SD Coastal (Oceanside–San Diego)", "headway": "10 min",
+     "route": [{"station": "oceanside"}, {"station": "carlsbad"}, {"station": "encinitas"},
+               {"station": "solana-beach"}, {"station": "ucsd"}, {"station": "old-town"},
+               {"station": "san-diego"}]},
+    {"id": "rx-sd-inland", "name": "RX SD Inland (San Diego–Escondido)", "headway": "10 min",
+     "route": [{"station": "san-diego"}, {"station": "miramar"}, {"station": "rancho-bern"},
+               {"station": "escondido"}]},
+    {"id": "rx-sd-east", "name": "RX SD East (San Diego–El Cajon)", "headway": "10 min",
+     "route": [{"station": "san-diego"}, {"station": "la-mesa"}, {"station": "el-cajon"}]},
+    {"id": "rx-border", "name": "RX Border (San Diego–San Ysidro)", "headway": "10 min",
+     "route": [{"station": "san-diego"}, {"station": "chula-vista"}, {"station": "san-ysidro"}]}
+  ]
+}

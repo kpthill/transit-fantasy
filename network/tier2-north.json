@@ -1,0 +1,27 @@
+{
+  "tier": 2,
+  "stations": {
+    "vallejo":     {"name": "Vallejo",         "coord": [-122.2566, 38.1041]},
+    "napa":        {"name": "Napa",            "coord": [-122.2860, 38.2970]},
+    "st-helena":   {"name": "St Helena",       "coord": [-122.4700, 38.5050]},
+    "calistoga":   {"name": "Calistoga",       "coord": [-122.5800, 38.5790]},
+    "santa-rosa":  {"name": "Santa Rosa",      "coord": [-122.7141, 38.4404]},
+    "sonoma":      {"name": "Sonoma",          "coord": [-122.4580, 38.2920]},
+    "healdsburg":  {"name": "Healdsburg",      "coord": [-122.8690, 38.6100]},
+    "ukiah":       {"name": "Ukiah",           "coord": [-123.2080, 39.1500]},
+    "willits":     {"name": "Willits",         "coord": [-123.3560, 39.4100]},
+    "eureka":      {"name": "Eureka",          "coord": [-124.1640, 40.8020]},
+    "arcata":      {"name": "Arcata",          "coord": [-124.0870, 40.8670]}
+  },
+  "lines": [
+    {"id": "rx-wine", "name": "RX Wine Country (Vallejo–Calistoga)", "headway": "20 min",
+     "route": [{"station": "vallejo"}, {"station": "napa"}, {"station": "st-helena"},
+               {"station": "calistoga"}]},
+    {"id": "rx-sonoma", "name": "RX Sonoma (Santa Rosa–Napa)", "headway": "20 min",
+     "route": [{"station": "santa-rosa"}, {"station": "sonoma"}, {"station": "napa"}]},
+    {"id": "rx-redwood", "name": "RX Redwood (Santa Rosa–Arcata)", "headway": "60 min",
+     "route": [{"station": "santa-rosa"}, {"station": "healdsburg"}, {"station": "ukiah"},
+               {"station": "willits"}, {"via": [-123.80, 40.10]}, {"via": [-123.95, 40.45]},
+               {"station": "eureka"}, {"station": "arcata"}]}
+  ]
+}

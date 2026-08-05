@@ -1,7 +1,9 @@
 {
   "groups": [
     {"id": "tier3", "tier": 3, "name": "High-Speed Rail", "color": "#D55E00", "files": ["tier3.geojson"]},
-    {"id": "tier2", "tier": 2, "name": "Regional Express", "color": "#0072B2", "files": ["tier2-bay.geojson"]},
-    {"id": "tier1", "tier": 1, "name": "Urban Metro (SF)", "color": "#009E73", "files": ["tier1-sf.geojson"]}
+    {"id": "tier2", "tier": 2, "name": "Regional Express", "color": "#0072B2",
+     "files": ["tier2-bay.geojson", "tier2-la.geojson", "tier2-sd.geojson", "tier2-valley.geojson",
+               "tier2-coast.geojson", "tier2-north.geojson", "tier2-gateways.geojson"]},
+    {"id": "tier1", "tier": 1, "name": "Urban Metro", "color": "#009E73", "files": ["tier1-sf.geojson"]}
   ]
 }

@@ -292,6 +292,61 @@ def main() -> None:
             lon, lat = meta["coord"]
             if BBOX[0] <= lat <= BBOX[2] and BBOX[1] <= lon <= BBOX[3]:
                 hubs[meta["name"]] = (lon, lat)
+    def closest_on_polyline(lm, p):
+        best = None
+        for i in range(len(lm) - 1):
+            a, b = lm[i], lm[i + 1]
+            dx, dy = b[0] - a[0], b[1] - a[1]
+            l2 = dx * dx + dy * dy
+            t = 0 if l2 == 0 else max(0, min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l2))
+            q = (a[0] + t * dx, a[1] + t * dy)
+            d = math.hypot(p[0] - q[0], p[1] - q[1])
+            if best is None or d < best[0]:
+                best = (d, q)
+        return best
+
+    # Trunk-merge: where two lines run sustained-parallel closer than
+    # ~240 m for over 500 m (downtown funneling), snap the shorter line
+    # onto the longer one — shared trunk with shared stations, like real
+    # interlining. Single-point proximity (crossings) is left alone.
+    def polylen(lm):
+        return sum(math.hypot(lm[i + 1][0] - lm[i][0], lm[i + 1][1] - lm[i][1]) for i in range(len(lm) - 1))
+
+    order = sorted(lines, key=lambda lb: -polylen([mercator(*p) for p in lines[lb][1]]))
+    for ia, la in enumerate(order):
+        for lb_ in order[ia + 1:]:
+            A = [mercator(*p) for p in lines[la][1]]
+            B = list(lines[lb_][1])
+            Bm = [mercator(*p) for p in B]
+            proj = [closest_on_polyline(A, p) for p in Bm]
+            changed = False
+
+            def flush(run):
+                nonlocal changed
+                if len(run) < 2:
+                    return
+                arc = sum(math.hypot(Bm[k + 1][0] - Bm[k][0], Bm[k + 1][1] - Bm[k][1])
+                          for k in range(run[0], run[-1]))
+                if arc < 500:
+                    return
+                for k in run:
+                    B[k] = inv_mercator(*proj[k][1])
+                changed = True
+
+            run = []
+            for k in range(len(Bm)):
+                if proj[k][0] < 240:
+                    run.append(k)
+                else:
+                    flush(run)
+                    run = []
+            flush(run)
+            if changed:
+                dedup = [B[0]] + [p for i, p in enumerate(B[1:], 1)
+                                  if math.dist(mercator(*p), mercator(*B[i - 1])) > 10]
+                lines[lb_] = (lines[lb_][0], dedup)
+                print(f"trunk-merge: {lb_} shares trunk with {la}")
+
     def seg_dist_t(p, a, b):
         dx, dy = b[0] - a[0], b[1] - a[1]
         l2 = dx * dx + dy * dy

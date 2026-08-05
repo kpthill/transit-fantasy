@@ -1,0 +1,31 @@
+{
+  "tier": 2,
+  "stations": {
+    "indio":         {"name": "Indio/Coachella",   "coord": [-116.2150, 33.7200]},
+    "brawley":       {"name": "Brawley",           "coord": [-115.5300, 32.9800]},
+    "el-centro":     {"name": "El Centro",         "coord": [-115.5630, 32.7920]},
+    "calexico":      {"name": "Calexico/Mexicali", "coord": [-115.4990, 32.6790]},
+    "merced":        {"name": "Merced",            "coord": [-120.4830, 37.3050]},
+    "mariposa":      {"name": "Mariposa Gateway",  "coord": [-120.0330, 37.5060]},
+    "el-portal":     {"name": "Yosemite (El Portal)", "coord": [-119.7820, 37.6750]},
+    "visalia":       {"name": "Visalia",           "coord": [-119.2920, 36.3300]},
+    "three-rivers":  {"name": "Sequoia (Three Rivers)", "coord": [-118.9040, 36.4390]},
+    "palm-springs":  {"name": "Palm Springs",      "coord": [-116.5450, 33.8300]},
+    "yucca-valley":  {"name": "Yucca Valley",      "coord": [-116.4320, 34.1140]},
+    "joshua-tree":   {"name": "Joshua Tree",       "coord": [-116.3130, 34.1350]},
+    "twentynine":    {"name": "Twentynine Palms",  "coord": [-116.0540, 34.1360]}
+  },
+  "lines": [
+    {"id": "rx-imperial", "name": "RX Imperial (Indio–Calexico)", "headway": "30 min",
+     "route": [{"station": "indio"}, {"via": [-115.90, 33.35]}, {"station": "brawley"},
+               {"station": "el-centro"}, {"station": "calexico"}]},
+    {"id": "rx-yosemite", "name": "RX Yosemite (Merced–El Portal)", "headway": "30 min",
+     "route": [{"station": "merced"}, {"via": [-120.26, 37.41]}, {"station": "mariposa"},
+               {"station": "el-portal"}]},
+    {"id": "rx-sequoia", "name": "RX Sequoia (Visalia–Three Rivers)", "headway": "30 min",
+     "route": [{"station": "visalia"}, {"via": [-119.05, 36.40]}, {"station": "three-rivers"}]},
+    {"id": "rx-joshuatree", "name": "RX Joshua Tree (Palm Springs–Twentynine Palms)", "headway": "30 min",
+     "route": [{"station": "palm-springs"}, {"via": [-116.50, 33.92]}, {"station": "yucca-valley"},
+               {"station": "joshua-tree"}, {"station": "twentynine"}]}
+  ]
+}
