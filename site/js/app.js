@@ -49,10 +49,13 @@ async function fetchJson(url) {
 }
 
 function mergeCollections(collections) {
-  return {
-    type: 'FeatureCollection',
-    features: collections.flatMap((c) => c.features),
-  };
+  const features = collections.flatMap((c) => c.features);
+  for (const f of features) {
+    if (Array.isArray(f.properties.lines)) {
+      f.properties.n_lines = f.properties.lines.length;
+    }
+  }
+  return { type: 'FeatureCollection', features };
 }
 
 function addGroup(group, data) {
@@ -82,6 +85,8 @@ function addGroup(group, data) {
     layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: { 'line-color': group.color, 'line-width': s.lineWidth },
   });
+  // Interchanges (3+ lines) render larger with a darker ring.
+  const isInterchange = ['>=', ['coalesce', ['get', 'n_lines'], 0], 3];
   map.addLayer({
     id: `${src}-stations`,
     type: 'circle',
@@ -89,10 +94,10 @@ function addGroup(group, data) {
     minzoom: s.stationMinzoom,
     filter: ['==', ['geometry-type'], 'Point'],
     paint: {
-      'circle-radius': s.stationRadius,
+      'circle-radius': ['case', isInterchange, s.stationRadius + 2, s.stationRadius],
       'circle-color': '#ffffff',
-      'circle-stroke-color': group.color,
-      'circle-stroke-width': 2,
+      'circle-stroke-color': ['case', isInterchange, '#333333', group.color],
+      'circle-stroke-width': ['case', isInterchange, 2.5, 2],
     },
   });
   map.addLayer({

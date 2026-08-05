@@ -1,32 +1,194 @@
 {
   "tier": 2,
   "stations": {
-    "oceanside":    {"name": "Oceanside",          "coord": [-117.3790, 33.1940]},
-    "carlsbad":     {"name": "Carlsbad",           "coord": [-117.3500, 33.1600]},
-    "encinitas":    {"name": "Encinitas",          "coord": [-117.2920, 33.0450]},
-    "solana-beach": {"name": "Solana Beach",       "coord": [-117.2710, 32.9910]},
-    "ucsd":         {"name": "UCSD/La Jolla",      "coord": [-117.2200, 32.8700]},
-    "old-town":     {"name": "Old Town",           "coord": [-117.1990, 32.7540]},
-    "san-diego":    {"name": "San Diego Santa Fe", "coord": [-117.1696, 32.7157]},
-    "miramar":      {"name": "Miramar",            "coord": [-117.1400, 32.8900]},
-    "rancho-bern":  {"name": "Rancho Bernardo",    "coord": [-117.0800, 33.0200]},
-    "escondido":    {"name": "Escondido",          "coord": [-117.0864, 33.1192]},
-    "la-mesa":      {"name": "La Mesa",            "coord": [-117.0230, 32.7680]},
-    "el-cajon":     {"name": "El Cajon",           "coord": [-116.9620, 32.7950]},
-    "chula-vista":  {"name": "Chula Vista",        "coord": [-117.0840, 32.6400]},
-    "san-ysidro":   {"name": "San Ysidro/Tijuana", "coord": [-117.0430, 32.5520]}
+    "oceanside": {
+      "name": "Oceanside",
+      "coord": [
+        -117.379,
+        33.194
+      ]
+    },
+    "carlsbad": {
+      "name": "Carlsbad",
+      "coord": [
+        -117.35,
+        33.16
+      ]
+    },
+    "encinitas": {
+      "name": "Encinitas",
+      "coord": [
+        -117.292,
+        33.045
+      ]
+    },
+    "solana-beach": {
+      "name": "Solana Beach",
+      "coord": [
+        -117.271,
+        32.991
+      ]
+    },
+    "ucsd": {
+      "name": "UCSD/La Jolla",
+      "coord": [
+        -117.234,
+        32.8801
+      ]
+    },
+    "old-town": {
+      "name": "Old Town",
+      "coord": [
+        -117.199,
+        32.754
+      ]
+    },
+    "san-diego": {
+      "name": "San Diego Santa Fe",
+      "coord": [
+        -117.1696,
+        32.7157
+      ]
+    },
+    "miramar": {
+      "name": "Miramar",
+      "coord": [
+        -117.14,
+        32.89
+      ]
+    },
+    "rancho-bern": {
+      "name": "Rancho Bernardo",
+      "coord": [
+        -117.08,
+        33.02
+      ]
+    },
+    "escondido": {
+      "name": "Escondido",
+      "coord": [
+        -117.0864,
+        33.1192
+      ]
+    },
+    "la-mesa": {
+      "name": "La Mesa",
+      "coord": [
+        -117.023,
+        32.768
+      ]
+    },
+    "el-cajon": {
+      "name": "El Cajon",
+      "coord": [
+        -116.962,
+        32.795
+      ]
+    },
+    "chula-vista": {
+      "name": "Chula Vista",
+      "coord": [
+        -117.084,
+        32.64
+      ]
+    },
+    "san-ysidro": {
+      "name": "San Ysidro/Tijuana",
+      "coord": [
+        -117.043,
+        32.552
+      ]
+    },
+    "san-airport": {
+      "name": "San Diego Airport",
+      "coord": [
+        -117.19,
+        32.7335
+      ]
+    }
   },
   "lines": [
-    {"id": "rx-sd-coastal", "name": "RX SD Coastal (Oceanside–San Diego)", "headway": "10 min",
-     "route": [{"station": "oceanside"}, {"station": "carlsbad"}, {"station": "encinitas"},
-               {"station": "solana-beach"}, {"station": "ucsd"}, {"station": "old-town"},
-               {"station": "san-diego"}]},
-    {"id": "rx-sd-inland", "name": "RX SD Inland (San Diego–Escondido)", "headway": "10 min",
-     "route": [{"station": "san-diego"}, {"station": "miramar"}, {"station": "rancho-bern"},
-               {"station": "escondido"}]},
-    {"id": "rx-sd-east", "name": "RX SD East (San Diego–El Cajon)", "headway": "10 min",
-     "route": [{"station": "san-diego"}, {"station": "la-mesa"}, {"station": "el-cajon"}]},
-    {"id": "rx-border", "name": "RX Border (San Diego–San Ysidro)", "headway": "10 min",
-     "route": [{"station": "san-diego"}, {"station": "chula-vista"}, {"station": "san-ysidro"}]}
+    {
+      "id": "rx-sd-coastal",
+      "name": "RX SD Coastal (Oceanside\u2013San Diego)",
+      "headway": "10 min",
+      "route": [
+        {
+          "station": "oceanside"
+        },
+        {
+          "station": "carlsbad"
+        },
+        {
+          "station": "encinitas"
+        },
+        {
+          "station": "solana-beach"
+        },
+        {
+          "station": "ucsd"
+        },
+        {
+          "station": "old-town"
+        },
+        {
+          "station": "san-airport"
+        },
+        {
+          "station": "san-diego"
+        }
+      ]
+    },
+    {
+      "id": "rx-sd-inland",
+      "name": "RX SD Inland (San Diego\u2013Escondido)",
+      "headway": "10 min",
+      "route": [
+        {
+          "station": "san-diego"
+        },
+        {
+          "station": "miramar"
+        },
+        {
+          "station": "rancho-bern"
+        },
+        {
+          "station": "escondido"
+        }
+      ]
+    },
+    {
+      "id": "rx-sd-east",
+      "name": "RX SD East (San Diego\u2013El Cajon)",
+      "headway": "10 min",
+      "route": [
+        {
+          "station": "san-diego"
+        },
+        {
+          "station": "la-mesa"
+        },
+        {
+          "station": "el-cajon"
+        }
+      ]
+    },
+    {
+      "id": "rx-border",
+      "name": "RX Border (San Diego\u2013San Ysidro)",
+      "headway": "10 min",
+      "route": [
+        {
+          "station": "san-diego"
+        },
+        {
+          "station": "chula-vista"
+        },
+        {
+          "station": "san-ysidro"
+        }
+      ]
+    }
   ]
 }

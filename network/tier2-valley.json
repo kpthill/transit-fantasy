@@ -1,54 +1,354 @@
 {
   "tier": 2,
   "stations": {
-    "sacramento":  {"name": "Sacramento Valley",  "coord": [-121.5006, 38.5847]},
-    "elk-grove":   {"name": "Elk Grove",          "coord": [-121.3700, 38.4100]},
-    "lodi":        {"name": "Lodi",               "coord": [-121.2720, 38.1340]},
-    "stockton":    {"name": "Stockton",           "coord": [-121.2860, 37.9530]},
-    "modesto":     {"name": "Modesto",            "coord": [-120.9970, 37.6420]},
-    "turlock":     {"name": "Turlock",            "coord": [-120.8500, 37.4900]},
-    "merced":      {"name": "Merced",             "coord": [-120.4830, 37.3050]},
-    "madera":      {"name": "Madera",             "coord": [-120.0600, 36.9600]},
-    "fresno":      {"name": "Fresno",             "coord": [-119.7871, 36.7378]},
-    "selma":       {"name": "Selma",              "coord": [-119.6100, 36.5700]},
-    "visalia":     {"name": "Visalia",            "coord": [-119.2920, 36.3300]},
-    "tulare":      {"name": "Tulare",             "coord": [-119.3500, 36.2100]},
-    "delano":      {"name": "Delano",             "coord": [-119.2500, 35.7700]},
-    "bakersfield": {"name": "Bakersfield",        "coord": [-119.0187, 35.3733]},
-    "marysville":  {"name": "Yuba City/Marysville", "coord": [-121.5900, 39.1400]},
-    "oroville":    {"name": "Oroville",           "coord": [-121.5560, 39.5140]},
-    "chico":       {"name": "Chico",              "coord": [-121.8370, 39.7280]},
-    "red-bluff":   {"name": "Red Bluff",          "coord": [-122.2360, 40.1780]},
-    "redding":     {"name": "Redding",            "coord": [-122.3920, 40.5870]},
-    "roseville":   {"name": "Roseville",          "coord": [-121.2880, 38.7520]},
-    "auburn":      {"name": "Auburn",             "coord": [-121.0770, 38.8970]},
-    "truckee":     {"name": "Truckee",            "coord": [-120.1830, 39.3280]},
-    "tahoe-city":  {"name": "Tahoe City",         "coord": [-120.1440, 39.1720]},
-    "folsom":      {"name": "Folsom",             "coord": [-121.1760, 38.6780]},
-    "placerville": {"name": "Placerville",        "coord": [-120.8000, 38.7300]},
-    "south-tahoe": {"name": "South Lake Tahoe",   "coord": [-119.9800, 38.9400]},
-    "tehachapi":   {"name": "Tehachapi",          "coord": [-118.4500, 35.1300]},
-    "mojave":      {"name": "Mojave",             "coord": [-118.1700, 35.0500]},
-    "lancaster":   {"name": "Lancaster",          "coord": [-118.1350, 34.6980]}
+    "sacramento": {
+      "name": "Sacramento Valley",
+      "coord": [
+        -121.5006,
+        38.5847
+      ]
+    },
+    "elk-grove": {
+      "name": "Elk Grove",
+      "coord": [
+        -121.37,
+        38.41
+      ]
+    },
+    "lodi": {
+      "name": "Lodi",
+      "coord": [
+        -121.272,
+        38.134
+      ]
+    },
+    "stockton": {
+      "name": "Stockton",
+      "coord": [
+        -121.286,
+        37.953
+      ]
+    },
+    "modesto": {
+      "name": "Modesto",
+      "coord": [
+        -120.997,
+        37.642
+      ]
+    },
+    "turlock": {
+      "name": "Turlock",
+      "coord": [
+        -120.85,
+        37.49
+      ]
+    },
+    "merced": {
+      "name": "Merced",
+      "coord": [
+        -120.483,
+        37.305
+      ]
+    },
+    "madera": {
+      "name": "Madera",
+      "coord": [
+        -120.06,
+        36.96
+      ]
+    },
+    "fresno": {
+      "name": "Fresno",
+      "coord": [
+        -119.7871,
+        36.7378
+      ]
+    },
+    "selma": {
+      "name": "Selma",
+      "coord": [
+        -119.61,
+        36.57
+      ]
+    },
+    "visalia": {
+      "name": "Visalia",
+      "coord": [
+        -119.292,
+        36.33
+      ]
+    },
+    "tulare": {
+      "name": "Tulare",
+      "coord": [
+        -119.35,
+        36.21
+      ]
+    },
+    "delano": {
+      "name": "Delano",
+      "coord": [
+        -119.25,
+        35.77
+      ]
+    },
+    "bakersfield": {
+      "name": "Bakersfield",
+      "coord": [
+        -119.0187,
+        35.3733
+      ]
+    },
+    "marysville": {
+      "name": "Yuba City/Marysville",
+      "coord": [
+        -121.59,
+        39.14
+      ]
+    },
+    "oroville": {
+      "name": "Oroville",
+      "coord": [
+        -121.556,
+        39.514
+      ]
+    },
+    "chico": {
+      "name": "Chico",
+      "coord": [
+        -121.837,
+        39.728
+      ]
+    },
+    "red-bluff": {
+      "name": "Red Bluff",
+      "coord": [
+        -122.236,
+        40.178
+      ]
+    },
+    "redding": {
+      "name": "Redding",
+      "coord": [
+        -122.392,
+        40.587
+      ]
+    },
+    "roseville": {
+      "name": "Roseville",
+      "coord": [
+        -121.288,
+        38.752
+      ]
+    },
+    "auburn": {
+      "name": "Auburn",
+      "coord": [
+        -121.077,
+        38.897
+      ]
+    },
+    "truckee": {
+      "name": "Truckee",
+      "coord": [
+        -120.183,
+        39.328
+      ]
+    },
+    "tahoe-city": {
+      "name": "Tahoe City",
+      "coord": [
+        -120.144,
+        39.172
+      ]
+    },
+    "folsom": {
+      "name": "Folsom",
+      "coord": [
+        -121.176,
+        38.678
+      ]
+    },
+    "placerville": {
+      "name": "Placerville",
+      "coord": [
+        -120.8,
+        38.73
+      ]
+    },
+    "south-tahoe": {
+      "name": "South Lake Tahoe",
+      "coord": [
+        -119.98,
+        38.94
+      ]
+    },
+    "tehachapi": {
+      "name": "Tehachapi",
+      "coord": [
+        -118.45,
+        35.13
+      ]
+    },
+    "mojave": {
+      "name": "Mojave",
+      "coord": [
+        -118.17,
+        35.05
+      ]
+    },
+    "lancaster": {
+      "name": "Lancaster",
+      "coord": [
+        -118.135,
+        34.698
+      ]
+    },
+    "smf": {
+      "name": "Sacramento Airport",
+      "coord": [
+        -121.59,
+        38.695
+      ]
+    }
   },
   "lines": [
-    {"id": "rx-valley", "name": "RX Valley (Sacramento–Bakersfield)", "headway": "15 min",
-     "route": [{"station": "sacramento"}, {"station": "elk-grove"}, {"station": "lodi"},
-               {"station": "stockton"}, {"station": "modesto"}, {"station": "turlock"},
-               {"station": "merced"}, {"station": "madera"}, {"station": "fresno"},
-               {"station": "selma"}, {"station": "visalia"}, {"station": "tulare"},
-               {"station": "delano"}, {"station": "bakersfield"}]},
-    {"id": "rx-northvalley", "name": "RX North Valley (Sacramento–Redding)", "headway": "30 min",
-     "route": [{"station": "sacramento"}, {"station": "marysville"}, {"station": "oroville"},
-               {"station": "chico"}, {"station": "red-bluff"}, {"station": "redding"}]},
-    {"id": "rx-donner", "name": "RX Donner (Sacramento–Tahoe City)", "headway": "30 min",
-     "route": [{"station": "sacramento"}, {"station": "roseville"}, {"station": "auburn"},
-               {"station": "truckee"}, {"station": "tahoe-city"}]},
-    {"id": "rx-tahoe-south", "name": "RX Tahoe South (Sacramento–South Lake Tahoe)", "headway": "30 min",
-     "route": [{"station": "sacramento"}, {"station": "folsom"}, {"station": "placerville"},
-               {"station": "south-tahoe"}]},
-    {"id": "rx-tehachapi", "name": "RX Tehachapi (Bakersfield–Lancaster)", "headway": "30 min",
-     "route": [{"station": "bakersfield"}, {"station": "tehachapi"}, {"station": "mojave"},
-               {"station": "lancaster"}]}
+    {
+      "id": "rx-valley",
+      "name": "RX Valley (Sacramento\u2013Bakersfield)",
+      "headway": "15 min",
+      "route": [
+        {
+          "station": "sacramento"
+        },
+        {
+          "station": "elk-grove"
+        },
+        {
+          "station": "lodi"
+        },
+        {
+          "station": "stockton"
+        },
+        {
+          "station": "modesto"
+        },
+        {
+          "station": "turlock"
+        },
+        {
+          "station": "merced"
+        },
+        {
+          "station": "madera"
+        },
+        {
+          "station": "fresno"
+        },
+        {
+          "station": "selma"
+        },
+        {
+          "station": "visalia"
+        },
+        {
+          "station": "tulare"
+        },
+        {
+          "station": "delano"
+        },
+        {
+          "station": "bakersfield"
+        }
+      ]
+    },
+    {
+      "id": "rx-northvalley",
+      "name": "RX North Valley (Sacramento\u2013Redding)",
+      "headway": "30 min",
+      "route": [
+        {
+          "station": "sacramento"
+        },
+        {
+          "station": "smf"
+        },
+        {
+          "station": "marysville"
+        },
+        {
+          "station": "oroville"
+        },
+        {
+          "station": "chico"
+        },
+        {
+          "station": "red-bluff"
+        },
+        {
+          "station": "redding"
+        }
+      ]
+    },
+    {
+      "id": "rx-donner",
+      "name": "RX Donner (Sacramento\u2013Tahoe City)",
+      "headway": "30 min",
+      "route": [
+        {
+          "station": "sacramento"
+        },
+        {
+          "station": "roseville"
+        },
+        {
+          "station": "auburn"
+        },
+        {
+          "station": "truckee"
+        },
+        {
+          "station": "tahoe-city"
+        }
+      ]
+    },
+    {
+      "id": "rx-tahoe-south",
+      "name": "RX Tahoe South (Sacramento\u2013South Lake Tahoe)",
+      "headway": "30 min",
+      "route": [
+        {
+          "station": "sacramento"
+        },
+        {
+          "station": "folsom"
+        },
+        {
+          "station": "placerville"
+        },
+        {
+          "station": "south-tahoe"
+        }
+      ]
+    },
+    {
+      "id": "rx-tehachapi",
+      "name": "RX Tehachapi (Bakersfield\u2013Lancaster)",
+      "headway": "30 min",
+      "route": [
+        {
+          "station": "bakersfield"
+        },
+        {
+          "station": "tehachapi"
+        },
+        {
+          "station": "mojave"
+        },
+        {
+          "station": "lancaster"
+        }
+      ]
+    }
   ]
 }

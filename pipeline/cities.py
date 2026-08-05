@@ -79,6 +79,9 @@ CITIES = {
                                         "Martin Luther King Jr. Boulevard",
                                         "Martin Luther King Junior Boulevard"])]),
             ("Vernon",        "ew", [P("Vernon Avenue")]),
+            ("Manchester",    "ew", [P(["Manchester Avenue", "Manchester Boulevard"])]),
+            ("Century",       "ew", [PTS([[-118.4085, 33.9425]]),
+                                     P("Century Boulevard", (33.930, -118.408, 33.955, -118.150))]),  # LAX
             ("Slauson",       "ew", [P("Slauson Avenue")]),
             ("Florence",      "ew", [P("Florence Avenue")]),
             ("Whittier",      "ew", [P("Whittier Boulevard")]),
@@ -88,6 +91,7 @@ CITIES = {
             ("Sepulveda",     "ns", [P("Sepulveda Boulevard")]),
             ("Van Nuys",      "ns", [P("Van Nuys Boulevard")]),
             ("Laurel Canyon", "ns", [P("Laurel Canyon Boulevard")]),
+            ("Lankershim",    "ns", [P("Lankershim Boulevard")]),  # NoHo + Universal
             ("Lincoln",       "ns", [P("Lincoln Boulevard")]),
             ("Westwood",      "ns", [P("Westwood Boulevard"), PTS([[-118.4452, 34.0700]])]),  # UCLA
             ("La Cienega",    "ns", [P("La Cienega Boulevard")]),

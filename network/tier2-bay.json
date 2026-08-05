@@ -1,105 +1,439 @@
 {
   "tier": 2,
   "stations": {
-    "sf-transbay":   {"name": "San Francisco Transbay", "coord": [-122.3927, 37.7897]},
-    "millbrae":      {"name": "Millbrae",               "coord": [-122.3866, 37.6003]},
-    "san-mateo":     {"name": "San Mateo",              "coord": [-122.3255, 37.5680]},
-    "redwood-city":  {"name": "Redwood City",           "coord": [-122.2281, 37.4852]},
-    "palo-alto":     {"name": "Palo Alto",              "coord": [-122.1649, 37.4429]},
-    "mountain-view": {"name": "Mountain View",          "coord": [-122.0768, 37.3944]},
-    "santa-clara":   {"name": "Santa Clara",            "coord": [-121.9360, 37.3530]},
-    "san-jose":      {"name": "San Jose Diridon",       "coord": [-121.9026, 37.3297]},
-    "richmond":      {"name": "Richmond",               "coord": [-122.3533, 37.9369]},
-    "berkeley":      {"name": "Berkeley",               "coord": [-122.2683, 37.8686]},
-    "oakland":       {"name": "Oakland Center",         "coord": [-122.2712, 37.8027]},
-    "san-leandro":   {"name": "San Leandro",            "coord": [-122.1608, 37.7249]},
-    "hayward":       {"name": "Hayward",                "coord": [-122.0870, 37.6688]},
-    "fremont":       {"name": "Fremont",                "coord": [-121.9886, 37.5574]},
-    "milpitas":      {"name": "Milpitas",               "coord": [-121.8996, 37.4323]},
-    "walnut-creek":  {"name": "Walnut Creek",           "coord": [-122.0652, 37.9101]},
-    "concord":       {"name": "Concord",                "coord": [-122.0300, 37.9779]},
-    "pittsburg":     {"name": "Pittsburg",              "coord": [-121.8890, 38.0180]},
-    "antioch":       {"name": "Antioch",                "coord": [-121.8058, 38.0049]},
-    "san-rafael":    {"name": "San Rafael",             "coord": [-122.5311, 37.9735]},
-    "novato":        {"name": "Novato",                 "coord": [-122.5697, 38.1074]},
-    "petaluma":      {"name": "Petaluma",               "coord": [-122.6367, 38.2324]},
-    "rohnert-park":  {"name": "Rohnert Park",           "coord": [-122.7011, 38.3396]},
-    "santa-rosa":    {"name": "Santa Rosa",             "coord": [-122.7141, 38.4404]},
-    "vallejo":       {"name": "Vallejo",                "coord": [-122.2566, 38.1041]},
-    "fairfield":     {"name": "Fairfield",              "coord": [-122.0402, 38.2494]},
-    "davis":         {"name": "Davis",                  "coord": [-121.7405, 38.5449]},
-    "sacramento":    {"name": "Sacramento Valley",      "coord": [-121.5006, 38.5847]},
-    "dublin":        {"name": "Dublin/Pleasanton",      "coord": [-121.8996, 37.7017]},
-    "livermore":     {"name": "Livermore",              "coord": [-121.7680, 37.6819]},
-    "tracy":         {"name": "Tracy",                  "coord": [-121.4252, 37.7397]},
-    "stockton":      {"name": "Stockton",               "coord": [-121.2860, 37.9530]},
-    "morgan-hill":   {"name": "Morgan Hill",            "coord": [-121.6544, 37.1305]},
-    "gilroy":        {"name": "Gilroy",                 "coord": [-121.5683, 37.0058]}
+    "sf-transbay": {
+      "name": "San Francisco Transbay",
+      "coord": [
+        -122.3927,
+        37.7897
+      ]
+    },
+    "millbrae": {
+      "name": "Millbrae",
+      "coord": [
+        -122.3866,
+        37.6003
+      ]
+    },
+    "san-mateo": {
+      "name": "San Mateo",
+      "coord": [
+        -122.3255,
+        37.568
+      ]
+    },
+    "redwood-city": {
+      "name": "Redwood City",
+      "coord": [
+        -122.2281,
+        37.4852
+      ]
+    },
+    "palo-alto": {
+      "name": "Palo Alto",
+      "coord": [
+        -122.1649,
+        37.4429
+      ]
+    },
+    "mountain-view": {
+      "name": "Mountain View",
+      "coord": [
+        -122.0768,
+        37.3944
+      ]
+    },
+    "santa-clara": {
+      "name": "Santa Clara",
+      "coord": [
+        -121.936,
+        37.353
+      ]
+    },
+    "san-jose": {
+      "name": "San Jose Diridon",
+      "coord": [
+        -121.9026,
+        37.3297
+      ]
+    },
+    "richmond": {
+      "name": "Richmond",
+      "coord": [
+        -122.3533,
+        37.9369
+      ]
+    },
+    "berkeley": {
+      "name": "Berkeley",
+      "coord": [
+        -122.2683,
+        37.8686
+      ]
+    },
+    "oakland": {
+      "name": "Oakland Center",
+      "coord": [
+        -122.2712,
+        37.8027
+      ]
+    },
+    "san-leandro": {
+      "name": "San Leandro",
+      "coord": [
+        -122.1608,
+        37.7249
+      ]
+    },
+    "hayward": {
+      "name": "Hayward",
+      "coord": [
+        -122.087,
+        37.6688
+      ]
+    },
+    "fremont": {
+      "name": "Fremont",
+      "coord": [
+        -121.9886,
+        37.5574
+      ]
+    },
+    "milpitas": {
+      "name": "Milpitas",
+      "coord": [
+        -121.8996,
+        37.4323
+      ]
+    },
+    "walnut-creek": {
+      "name": "Walnut Creek",
+      "coord": [
+        -122.0652,
+        37.9101
+      ]
+    },
+    "concord": {
+      "name": "Concord",
+      "coord": [
+        -122.03,
+        37.9779
+      ]
+    },
+    "pittsburg": {
+      "name": "Pittsburg",
+      "coord": [
+        -121.889,
+        38.018
+      ]
+    },
+    "antioch": {
+      "name": "Antioch",
+      "coord": [
+        -121.8058,
+        38.0049
+      ]
+    },
+    "san-rafael": {
+      "name": "San Rafael",
+      "coord": [
+        -122.5311,
+        37.9735
+      ]
+    },
+    "novato": {
+      "name": "Novato",
+      "coord": [
+        -122.5697,
+        38.1074
+      ]
+    },
+    "petaluma": {
+      "name": "Petaluma",
+      "coord": [
+        -122.6367,
+        38.2324
+      ]
+    },
+    "rohnert-park": {
+      "name": "Rohnert Park",
+      "coord": [
+        -122.7011,
+        38.3396
+      ]
+    },
+    "santa-rosa": {
+      "name": "Santa Rosa",
+      "coord": [
+        -122.7141,
+        38.4404
+      ]
+    },
+    "vallejo": {
+      "name": "Vallejo",
+      "coord": [
+        -122.2566,
+        38.1041
+      ]
+    },
+    "fairfield": {
+      "name": "Fairfield",
+      "coord": [
+        -122.0402,
+        38.2494
+      ]
+    },
+    "davis": {
+      "name": "Davis",
+      "coord": [
+        -121.7405,
+        38.5449
+      ]
+    },
+    "sacramento": {
+      "name": "Sacramento Valley",
+      "coord": [
+        -121.5006,
+        38.5847
+      ]
+    },
+    "dublin": {
+      "name": "Dublin/Pleasanton",
+      "coord": [
+        -121.8996,
+        37.7017
+      ]
+    },
+    "livermore": {
+      "name": "Livermore",
+      "coord": [
+        -121.768,
+        37.6819
+      ]
+    },
+    "tracy": {
+      "name": "Tracy",
+      "coord": [
+        -121.4252,
+        37.7397
+      ]
+    },
+    "stockton": {
+      "name": "Stockton",
+      "coord": [
+        -121.286,
+        37.953
+      ]
+    },
+    "morgan-hill": {
+      "name": "Morgan Hill",
+      "coord": [
+        -121.6544,
+        37.1305
+      ]
+    },
+    "gilroy": {
+      "name": "Gilroy",
+      "coord": [
+        -121.5683,
+        37.0058
+      ]
+    },
+    "sfo": {
+      "name": "SFO Airport",
+      "coord": [
+        -122.389,
+        37.6155
+      ]
+    },
+    "oak-airport": {
+      "name": "Oakland Airport",
+      "coord": [
+        -122.212,
+        37.7126
+      ]
+    }
   },
   "lines": [
     {
       "id": "rx-peninsula",
-      "name": "RX Peninsula (SF–San Jose)",
+      "name": "RX Peninsula (SF\u2013San Jose)",
       "headway": "10 min",
       "route": [
-        {"station": "sf-transbay"}, {"station": "millbrae"}, {"station": "san-mateo"},
-        {"station": "redwood-city"}, {"station": "palo-alto"}, {"station": "mountain-view"},
-        {"station": "santa-clara"}, {"station": "san-jose"}
+        {
+          "station": "sf-transbay"
+        },
+        {
+          "station": "sfo"
+        },
+        {
+          "station": "millbrae"
+        },
+        {
+          "station": "san-mateo"
+        },
+        {
+          "station": "redwood-city"
+        },
+        {
+          "station": "palo-alto"
+        },
+        {
+          "station": "mountain-view"
+        },
+        {
+          "station": "santa-clara"
+        },
+        {
+          "station": "san-jose"
+        }
       ]
     },
     {
       "id": "rx-eastbay",
-      "name": "RX East Bay (Richmond–San Jose)",
+      "name": "RX East Bay (Richmond\u2013San Jose)",
       "headway": "10 min",
       "route": [
-        {"station": "richmond"}, {"station": "berkeley"}, {"station": "oakland"},
-        {"station": "san-leandro"}, {"station": "hayward"}, {"station": "fremont"},
-        {"station": "milpitas"}, {"station": "san-jose"}
+        {
+          "station": "richmond"
+        },
+        {
+          "station": "berkeley"
+        },
+        {
+          "station": "oakland"
+        },
+        {
+          "station": "oak-airport"
+        },
+        {
+          "station": "san-leandro"
+        },
+        {
+          "station": "hayward"
+        },
+        {
+          "station": "fremont"
+        },
+        {
+          "station": "milpitas"
+        },
+        {
+          "station": "san-jose"
+        }
       ]
     },
     {
       "id": "rx-diablo",
-      "name": "RX Diablo (Oakland–Antioch)",
+      "name": "RX Diablo (Oakland\u2013Antioch)",
       "headway": "10 min",
       "route": [
-        {"station": "oakland"}, {"station": "walnut-creek"}, {"station": "concord"},
-        {"station": "pittsburg"}, {"station": "antioch"}
+        {
+          "station": "oakland"
+        },
+        {
+          "station": "walnut-creek"
+        },
+        {
+          "station": "concord"
+        },
+        {
+          "station": "pittsburg"
+        },
+        {
+          "station": "antioch"
+        }
       ]
     },
     {
       "id": "rx-northbay",
-      "name": "RX North Bay (SF–Santa Rosa)",
+      "name": "RX North Bay (SF\u2013Santa Rosa)",
       "headway": "15 min",
       "route": [
-        {"station": "sf-transbay"}, {"station": "san-rafael"}, {"station": "novato"},
-        {"station": "petaluma"}, {"station": "rohnert-park"}, {"station": "santa-rosa"}
+        {
+          "station": "sf-transbay"
+        },
+        {
+          "station": "san-rafael"
+        },
+        {
+          "station": "novato"
+        },
+        {
+          "station": "petaluma"
+        },
+        {
+          "station": "rohnert-park"
+        },
+        {
+          "station": "santa-rosa"
+        }
       ]
     },
     {
       "id": "rx-capitol",
-      "name": "RX Capitol (SF–Sacramento)",
+      "name": "RX Capitol (SF\u2013Sacramento)",
       "headway": "15 min",
       "route": [
-        {"station": "sf-transbay"}, {"station": "oakland"}, {"station": "richmond"},
-        {"station": "vallejo"}, {"station": "fairfield"}, {"station": "davis"},
-        {"station": "sacramento"}
+        {
+          "station": "sf-transbay"
+        },
+        {
+          "station": "oakland"
+        },
+        {
+          "station": "richmond"
+        },
+        {
+          "station": "vallejo"
+        },
+        {
+          "station": "fairfield"
+        },
+        {
+          "station": "davis"
+        },
+        {
+          "station": "sacramento"
+        }
       ]
     },
     {
       "id": "rx-altamont",
-      "name": "RX Altamont (Oakland–Stockton)",
+      "name": "RX Altamont (Oakland\u2013Stockton)",
       "headway": "15 min",
       "route": [
-        {"station": "oakland"}, {"station": "dublin"}, {"station": "livermore"},
-        {"station": "tracy"}, {"station": "stockton"}
+        {
+          "station": "oakland"
+        },
+        {
+          "station": "dublin"
+        },
+        {
+          "station": "livermore"
+        },
+        {
+          "station": "tracy"
+        },
+        {
+          "station": "stockton"
+        }
       ]
     },
     {
       "id": "rx-gilroy",
-      "name": "RX Gilroy (San Jose–Gilroy)",
+      "name": "RX Gilroy (San Jose\u2013Gilroy)",
       "headway": "15 min",
       "route": [
-        {"station": "san-jose"}, {"station": "morgan-hill"}, {"station": "gilroy"}
+        {
+          "station": "san-jose"
+        },
+        {
+          "station": "morgan-hill"
+        },
+        {
+          "station": "gilroy"
+        }
       ]
     }
   ]
