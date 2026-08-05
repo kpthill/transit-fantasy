@@ -29,37 +29,60 @@ OVERPASS_MIRRORS = [
 ]
 UA = {"User-Agent": "ca-fantasy-transit/0.1 (github.com/kpthill/transit-fantasy)"}
 
-# label, orientation (ew/ns), OSM street names to stitch
+# Corridors are chains of parts, joined in order; gaps between consecutive
+# parts are drawn as straight connectors (= tunnels under hills/parks — per
+# Kevin 2026-08-05: paint the line wherever the tunnel goes, lines must
+# cross Twin Peaks etc., not die at the hills). A part is a list of OSM
+# street names, optionally with a bbox (s, w, n, e) to disambiguate.
+def P(names, bbox=None):
+    return {"names": names if isinstance(names, list) else [names], "bbox": bbox}
+
 CORRIDORS = [
-    ("Geary",        "ew", ["Geary Boulevard", "Geary Street"]),
-    ("Fulton",       "ew", ["Fulton Street"]),
-    ("Judah",        "ew", ["Judah Street"]),
-    ("Taraval",      "ew", ["Taraval Street"]),
-    ("Ocean–Geneva", "ew", ["Ocean Avenue", "Geneva Avenue"]),
-    ("California",   "ew", ["California Street"]),
-    ("Union",        "ew", ["Union Street"]),
-    ("Market",       "ew", ["Market Street"]),
-    ("16th St",      "ew", ["16th Street"]),
-    ("24th St",      "ew", ["24th Street"]),
-    ("Sunset",       "ns", ["Sunset Boulevard"]),
-    ("19th Ave",     "ns", ["19th Avenue", "Park Presidio Boulevard"]),
-    ("Masonic",      "ns", ["Masonic Avenue"]),
-    ("Divisadero",   "ns", ["Divisadero Street", "Castro Street"]),
-    ("Fillmore",     "ns", ["Fillmore Street"]),
-    ("Van Ness",     "ns", ["Van Ness Avenue", "South Van Ness Avenue"]),
-    ("Mission",      "ns", ["Mission Street"]),
-    ("3rd St",       "ns", ["3rd Street"]),
-    ("Potrero",      "ns", ["Potrero Avenue"]),
-    ("Embarcadero",  "ns", ["The Embarcadero"]),
+    # East–west, full width of the city where terrain-sensible
+    ("Geary",      "ew", [P("Point Lobos Avenue"), P("Geary Boulevard"), P("Geary Street")]),
+    ("Fulton",     "ew", [P("Fulton Street")]),
+    ("Judah",      "ew", [P("Judah Street"), P("Duboce Avenue")]),          # Sunset Tunnel
+    ("Taraval",    "ew", [P("Taraval Street"), P("West Portal Avenue"),
+                          P("Castro Street", (37.760, -122.437, 37.7627, -122.433))]),  # Twin Peaks Tunnel to Castro/Market
+    ("Vicente–24th", "ew", [P("Vicente Street"), P("24th Street"), P("Cesar Chavez Street")]),  # Mt Davidson tunnel
+    ("Ocean",      "ew", [P("Sloat Boulevard"), P("Ocean Avenue"), P("Geneva Avenue")]),
+    ("California", "ew", [P("California Street")]),
+    ("Union",      "ew", [P("Union Street")]),
+    ("Market",     "ew", [P("Portola Drive"), P("Market Street")]),
+    ("16th St",    "ew", [P("Parnassus Avenue"), P("16th Street")]),        # Corona Heights tunnel
+    # North–south
+    ("Sunset",     "ns", [P("Sunset Boulevard"), P("36th Avenue", (37.771, -122.51, 37.79, -122.49))]),
+    ("9th Ave",    "ns", [P("9th Avenue")]),
+    ("19th Ave",   "ns", [P("Junipero Serra Boulevard", (37.703, -122.48, 37.735, -122.46)),
+                          P("19th Avenue"), P("Park Presidio Boulevard")]),
+    ("Masonic",    "ns", [P("Clayton Street"), P("Masonic Avenue"), P("Presidio Avenue")]),
+    ("Divisadero", "ns", [P("San Jose Avenue", (37.703, -122.46, 37.742, -122.42)),
+                          P("Castro Street", (37.741, -122.44, 37.769, -122.43)),
+                          P("Divisadero Street")]),
+    ("Fillmore",   "ns", [P("Church Street"), P("Fillmore Street")]),
+    ("Van Ness",   "ns", [P("South Van Ness Avenue"), P("Van Ness Avenue")]),
+    ("Polk",       "ns", [P("Polk Street")]),
+    ("Mission",    "ns", [P("Mission Street")]),
+    ("Stockton",   "ns", [P("4th Street", (37.768, -122.41, 37.79, -122.39)), P("Stockton Street")]),
+    ("Columbus",   "ns", [P("3rd Street"), P("Kearny Street"), P("Columbus Avenue")]),
+    ("Potrero",    "ns", [P("Bayshore Boulevard", (37.703, -122.42, 37.75, -122.39)),
+                          P("Potrero Avenue"), P("10th Street", (37.768, -122.42, 37.78, -122.40))]),
+    ("Embarcadero", "ns", [P("The Embarcadero")]),
 ]
 
 BUCKET_M = 60.0  # centerline resolution along the principal axis
 
 
+def all_names() -> list[str]:
+    return sorted({n for _, _, parts in CORRIDORS for p in parts for n in p["names"]})
+
+
 def fetch_streets() -> dict:
-    if CACHE.exists():
-        return json.loads(CACHE.read_text())
-    names = sorted({n for _, _, ns in CORRIDORS for n in ns})
+    names = all_names()
+    key = str(abs(hash(tuple(names))))
+    cache = CACHE.with_name(f"sf_streets_{key}.json")
+    if cache.exists():
+        return json.loads(cache.read_text())
     regex = "^(" + "|".join(n.replace(" ", "\\\\ ") for n in names) + ")$"
     # Overpass regex doesn't need space escaping; keep names verbatim.
     regex = "^(" + "|".join(names) + ")$"
@@ -85,8 +108,8 @@ out geom;
             time.sleep(5 * (attempt + 1))
     if data is None:
         raise SystemExit(f"all overpass attempts failed: {last_err}")
-    CACHE.parent.mkdir(parents=True, exist_ok=True)
-    CACHE.write_text(json.dumps(data))
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    cache.write_text(json.dumps(data))
     return data
 
 
@@ -182,34 +205,41 @@ def main() -> None:
         return line
 
     def join_parts(parts):
-        # Concatenate per-street centerlines end-to-end, choosing orientations
-        # that minimize junction gaps (streets in a corridor meet at ends).
-        chain = parts[0]
-        rest = parts[1:]
-        while rest:
+        # Concatenate part centerlines IN SPEC ORDER, flipping each to
+        # minimize the junction gap. Gaps become straight connectors —
+        # that's how tunnels under hills/parks get painted.
+        chain = list(parts[0])
+        for q in parts[1:]:
             best = None
-            for idx, p in enumerate(rest):
-                for flip_chain in (False, True):
-                    for flip_p in (False, True):
-                        c = chain[::-1] if flip_chain else chain
-                        q = p[::-1] if flip_p else p
-                        d = math.dist(mercator(*c[-1]), mercator(*q[0]))
-                        if best is None or d < best[0]:
-                            best = (d, idx, flip_chain, flip_p)
-            _, idx, fc, fp = best
+            for flip_chain in (False, True):
+                for flip_q in (False, True):
+                    c = chain[::-1] if flip_chain else chain
+                    p = q[::-1] if flip_q else q
+                    d = math.dist(mercator(*c[-1]), mercator(*p[0]))
+                    if best is None or d < best[0]:
+                        best = (d, flip_chain, flip_q)
+            _, fc, fq = best
             if fc:
                 chain = chain[::-1]
-            q = rest.pop(idx)
-            chain = chain + (q[::-1] if fp else q)
+            chain = chain + (list(q[::-1]) if fq else list(q))
         return chain
 
+    def in_bbox(lon, lat, bbox):
+        s, w, n, e = bbox
+        return s <= lat <= n and w <= lon <= e
+
     lines = {}
-    for label, orient, names in CORRIDORS:
+    for label, orient, part_specs in CORRIDORS:
         parts = []
-        for n in names:
-            ways = by_name.get(n, [])
+        for spec in part_specs:
+            ways = [w for n in spec["names"] for w in by_name.get(n, [])]
+            if spec["bbox"]:
+                ways = [[pt for pt in way if in_bbox(pt[0], pt[1], spec["bbox"])] for way in ways]
+                ways = [w for w in ways if len(w) >= 2]
             if ways:
                 parts.append(smooth(centerline(ways)))
+            else:
+                print(f"WARNING: corridor {label}: no ways for part {spec['names']}")
         if not parts:
             print(f"WARNING: no OSM ways found for corridor {label}")
             continue
