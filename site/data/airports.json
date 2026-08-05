@@ -1,0 +1,26 @@
+{
+  "comment": "Commercial CA airports for the flight model. tier: major = frequent jet service, regional = limited scheduled service. Coords are terminal areas.",
+  "airports": [
+    {"code": "SFO", "name": "San Francisco Intl", "lon": -122.389, "lat": 37.616, "tier": "major"},
+    {"code": "OAK", "name": "Oakland Intl", "lon": -122.212, "lat": 37.712, "tier": "major"},
+    {"code": "SJC", "name": "San Jose Mineta Intl", "lon": -121.929, "lat": 37.363, "tier": "major"},
+    {"code": "SMF", "name": "Sacramento Intl", "lon": -121.591, "lat": 38.695, "tier": "major"},
+    {"code": "LAX", "name": "Los Angeles Intl", "lon": -118.408, "lat": 33.942, "tier": "major"},
+    {"code": "BUR", "name": "Hollywood Burbank", "lon": -118.359, "lat": 34.201, "tier": "regional"},
+    {"code": "LGB", "name": "Long Beach", "lon": -118.152, "lat": 33.818, "tier": "regional"},
+    {"code": "SNA", "name": "John Wayne Orange County", "lon": -117.868, "lat": 33.676, "tier": "major"},
+    {"code": "ONT", "name": "Ontario Intl", "lon": -117.601, "lat": 34.056, "tier": "major"},
+    {"code": "SAN", "name": "San Diego Intl", "lon": -117.190, "lat": 32.734, "tier": "major"},
+    {"code": "PSP", "name": "Palm Springs Intl", "lon": -116.507, "lat": 33.827, "tier": "regional"},
+    {"code": "FAT", "name": "Fresno Yosemite Intl", "lon": -119.718, "lat": 36.776, "tier": "regional"},
+    {"code": "SBA", "name": "Santa Barbara", "lon": -119.840, "lat": 34.426, "tier": "regional"},
+    {"code": "SBP", "name": "San Luis Obispo", "lon": -120.642, "lat": 35.237, "tier": "regional"},
+    {"code": "MRY", "name": "Monterey Regional", "lon": -121.843, "lat": 36.587, "tier": "regional"},
+    {"code": "STS", "name": "Sonoma County (Santa Rosa)", "lon": -122.813, "lat": 38.509, "tier": "regional"},
+    {"code": "ACV", "name": "Humboldt County (Arcata)", "lon": -124.109, "lat": 40.978, "tier": "regional"},
+    {"code": "RDD", "name": "Redding Regional", "lon": -122.293, "lat": 40.509, "tier": "regional"},
+    {"code": "BFL", "name": "Bakersfield Meadows Field", "lon": -119.056, "lat": 35.434, "tier": "regional"},
+    {"code": "MMH", "name": "Mammoth Yosemite", "lon": -118.838, "lat": 37.624, "tier": "regional"},
+    {"code": "IPL", "name": "Imperial County", "lon": -115.579, "lat": 32.834, "tier": "regional"}
+  ]
+}
