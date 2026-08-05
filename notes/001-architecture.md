@@ -54,10 +54,10 @@ Google-Maps-like interface: zoomable searchable map, toggleable overlays for
 ## Frontend
 
 - MapLibre GL JS.
-- Basemap: **proposal — OpenFreeMap** (free hosted OSM vector tiles, no API key,
-  no usage caps, MapLibre-native). Fallback: MapTiler/Stadia free tier with
-  domain-restricted key. Self-hosted PMTiles rejected (Pages 100 MB/file limit,
-  flaky range-request support).
+- Basemap: **DECIDED (2026-08-05) — OpenFreeMap** (free hosted OSM vector
+  tiles, no API key, no usage caps, MapLibre-native). Fallback: MapTiler/Stadia
+  free tier with domain-restricted key. Self-hosted PMTiles rejected (Pages
+  100 MB/file limit, flaky range-request support).
 - Network overlays: GeoJSON (or small PMTiles) generated from network
   definition files; toggle per variant.
 
@@ -78,10 +78,11 @@ Open questions logged there.
 
 ## Open questions (architecture)
 
-1. Basemap provider: OpenFreeMap vs. keyed provider — confirm.
+1. ~~Basemap provider~~ — DECIDED: OpenFreeMap (see above).
 2. Anchor set definition: exact criteria + count (drives all matrix sizes).
 3. Transit representative time: median of sampled departures vs. best-case —
    pick one and document.
 4. Peak-driving congestion model calibration source.
-5. Whether data assets live in-repo vs. built by CI into the Pages artifact
-   (repo bloat vs. build complexity).
+5. ~~Data assets in-repo vs. CI-built~~ — DECIDED (2026-08-05): generated
+   assets live in-repo. Simpler deploys; revisit only if repo size becomes a
+   problem.
