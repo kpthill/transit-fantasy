@@ -33,13 +33,17 @@ def load_drive(profile, n):
 
 
 def load_transit(period, n):
-    f = CACHE / f"matrix_transit_{period}.bin"
-    mat = array("H")
-    if f.exists():
-        mat.frombytes(f.read_bytes())
-    if len(mat) != n * n:
-        print(f"transit_{period}: MISSING or wrong size ({len(mat)}), filling unreachable")
-        mat = array("H", [65535] * (n * n))
+    mat = array("H", [65535] * (n * n))
+    pat = re.compile(rf"transit_{period}_(\d+)_(\d+)\.bin")
+    found = 0
+    for f in sorted((CACHE / "chunks").glob(f"transit_{period}_*.bin")):
+        m = pat.match(f.name)
+        lo, hi = int(m.group(1)), int(m.group(2))
+        chunk = array("H")
+        chunk.frombytes(f.read_bytes())
+        mat[lo * n:hi * n] = chunk
+        found += hi - lo
+    print(f"transit_{period}: {found}/{n} rows from chunks")
     return mat
 
 

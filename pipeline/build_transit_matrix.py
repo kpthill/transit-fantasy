@@ -142,13 +142,9 @@ def main():
 
     acc = [access(a) for a in anchors]
     n = len(anchors)
-    out_path = CACHE / f"matrix_transit_{period}.bin"
-    mat = array("H", [65535]) * 0
-    if out_path.exists() and lo > 0:
-        mat = array("H")
-        mat.frombytes(out_path.read_bytes())
-    if len(mat) != n * n:
-        mat = array("H", [65535] * (n * n))
+    (CACHE / "chunks").mkdir(exist_ok=True)
+    out_path = CACHE / "chunks" / f"transit_{period}_{lo}_{hi}.bin"
+    mat = array("H", [65535] * ((hi - lo) * n))
 
     t0 = time.time()
     for si in range(lo, hi):
@@ -169,7 +165,7 @@ def main():
                     dist[v] = nd
                     heapq.heappush(pq, (nd, v))
         # egress: stop -> anchor
-        row = si * n
+        row = (si - lo) * n
         for ti in range(n):
             best = 1e18
             for j, wmin in acc[ti]:
