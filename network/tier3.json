@@ -1,0 +1,106 @@
+{
+  "tier": 3,
+  "stations": {
+    "sf-transbay":   {"name": "San Francisco Transbay", "coord": [-122.3927, 37.7897]},
+    "oakland":       {"name": "Oakland Center",          "coord": [-122.2712, 37.8027]},
+    "sacramento":    {"name": "Sacramento Valley",       "coord": [-121.5006, 38.5847]},
+    "stockton":      {"name": "Stockton",                "coord": [-121.2860, 37.9530]},
+    "modesto":       {"name": "Modesto",                 "coord": [-120.9970, 37.6420]},
+    "merced":        {"name": "Merced",                  "coord": [-120.4830, 37.3050]},
+    "san-jose":      {"name": "San Jose Diridon",        "coord": [-121.9026, 37.3297]},
+    "fresno":        {"name": "Fresno",                  "coord": [-119.7871, 36.7378]},
+    "kings-tulare":  {"name": "Kings–Tulare (Hanford)",  "coord": [-119.6457, 36.3275]},
+    "bakersfield":   {"name": "Bakersfield",             "coord": [-119.0187, 35.3733]},
+    "la-union":      {"name": "Los Angeles Union",       "coord": [-118.2365, 34.0556]},
+    "anaheim":       {"name": "Anaheim",                 "coord": [-117.8843, 33.8039]},
+    "ontario":       {"name": "Ontario",                 "coord": [-117.6509, 34.0633]},
+    "riverside":     {"name": "Riverside",               "coord": [-117.3712, 33.9836]},
+    "escondido":     {"name": "Escondido",               "coord": [-117.0864, 33.1192]},
+    "san-diego":     {"name": "San Diego Santa Fe",      "coord": [-117.1696, 32.7157]}
+  },
+  "lines": [
+    {
+      "id": "hsr-spine",
+      "name": "HSR Spine (SF–LA)",
+      "headway": "15 min",
+      "route": [
+        {"station": "sf-transbay"},
+        {"via": [-122.3860, 37.6000]},
+        {"via": [-122.2300, 37.4800]},
+        {"via": [-122.0800, 37.3900]},
+        {"station": "san-jose"},
+        {"via": [-121.5680, 37.0060]},
+        {"via": [-121.1840, 37.0630]},
+        {"via": [-120.8500, 37.0600]},
+        {"via": [-120.4000, 37.0000]},
+        {"via": [-120.0600, 36.9600]},
+        {"station": "fresno"},
+        {"via": [-119.7200, 36.5500]},
+        {"station": "kings-tulare"},
+        {"via": [-119.2400, 35.7700]},
+        {"station": "bakersfield"},
+        {"via": [-118.9200, 34.9300]},
+        {"via": [-118.6200, 34.4900]},
+        {"via": [-118.4500, 34.3100]},
+        {"via": [-118.3100, 34.1800]},
+        {"station": "la-union"}
+      ]
+    },
+    {
+      "id": "hsr-north",
+      "name": "HSR North (SF–Sacramento)",
+      "headway": "20 min",
+      "route": [
+        {"station": "sf-transbay"},
+        {"station": "oakland"},
+        {"via": [-122.3000, 37.9200]},
+        {"via": [-122.2500, 38.0500]},
+        {"via": [-122.0400, 38.2500]},
+        {"via": [-121.7400, 38.5500]},
+        {"station": "sacramento"}
+      ]
+    },
+    {
+      "id": "hsr-valley-link",
+      "name": "HSR Valley Link (Sacramento–Merced)",
+      "headway": "20 min",
+      "route": [
+        {"station": "sacramento"},
+        {"via": [-121.4200, 38.2500]},
+        {"station": "stockton"},
+        {"station": "modesto"},
+        {"via": [-120.8500, 37.5000]},
+        {"station": "merced"},
+        {"via": [-120.4000, 37.0000]}
+      ]
+    },
+    {
+      "id": "hsr-south",
+      "name": "HSR South (LA–San Diego)",
+      "headway": "20 min",
+      "route": [
+        {"station": "la-union"},
+        {"via": [-118.0300, 34.0700]},
+        {"via": [-117.7500, 34.0600]},
+        {"station": "ontario"},
+        {"station": "riverside"},
+        {"via": [-117.2300, 33.7800]},
+        {"via": [-117.1500, 33.4900]},
+        {"station": "escondido"},
+        {"via": [-117.1100, 32.9200]},
+        {"station": "san-diego"}
+      ]
+    },
+    {
+      "id": "hsr-anaheim",
+      "name": "HSR Anaheim Stub (LA–Anaheim)",
+      "headway": "20 min",
+      "route": [
+        {"station": "la-union"},
+        {"via": [-118.0800, 33.9100]},
+        {"via": [-117.9200, 33.8700]},
+        {"station": "anaheim"}
+      ]
+    }
+  ]
+}
