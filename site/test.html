@@ -1,0 +1,26 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>engine test</title></head>
+<body><pre id="out">running…</pre>
+<script type="module">
+import { directions } from './js/directions.js';
+const CASES = [
+  ['SF Mission → LA Koreatown', {lon:-122.4183,lat:37.7615}, {lon:-118.3009,lat:34.0617}],
+  ['Sunset District → SF downtown', {lon:-122.4946,lat:37.7530}, {lon:-122.4013,lat:37.7879}],
+  ['Berkeley → Palo Alto', {lon:-122.2683,lat:37.8686}, {lon:-122.1430,lat:37.4419}],
+  ['Fresno → Bakersfield', {lon:-119.7871,lat:36.7378}, {lon:-119.0187,lat:35.3733}],
+  ['Sacramento → San Diego', {lon:-121.4944,lat:38.5816}, {lon:-117.1611,lat:32.7157}],
+];
+const out = [];
+for (const [name, o, d] of CASES) {
+  out.push(`## ${name}`);
+  try {
+    const res = await directions(o, d);
+    for (const r of res) {
+      out.push(`  ${r.mode}: ${Number.isNaN(r.minutes) ? '-' : Math.round(r.minutes) + ' min'} ${r.note || ''}`);
+      if (r.legs) for (const l of r.legs) out.push(`      ${l.type === 'ride' ? l.line : l.type} -> ${l.to} (${Math.round(l.min)}m)`);
+    }
+  } catch (e) { out.push(`  ERROR: ${e.message}`); }
+}
+document.getElementById('out').textContent = out.join('\n');
+console.log('TESTDONE\n' + out.join('\n'));
+</script></body></html>

@@ -223,6 +223,17 @@ function fantasyRoute(o, d) {
   for (const l of out) {
     if (net.stations[l.to]) l.to = net.stations[l.to].name;
   }
+  // same-grid trips: the pure metro ride is a first-class candidate, and a
+  // "network" itinerary with zero ride legs is not a network trip at all
+  const go = gridFor(o), gd = gridFor(d);
+  let pure = null;
+  if (go && gd && go.slug === gd.slug) {
+    const t = tier1Time(o, d);
+    pure = { minutes: t, legs: [{ type: 'metro (city grid)', to: 'destination', min: t }] };
+  }
+  const hasRide = out.some((l) => l.type === 'ride');
+  if (!hasRide) return pure;
+  if (pure && pure.minutes <= bestVal) return pure;
   return { minutes: bestVal, legs: out };
 }
 

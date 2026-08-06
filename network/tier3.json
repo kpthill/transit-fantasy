@@ -75,6 +75,30 @@
       ]
     },
     {
+      "id": "hsr-central",
+      "name": "HSR Central (Sacramento–LA)",
+      "headway": "30 min",
+      "route": [
+        {"station": "sacramento"},
+        {"via": [-121.4200, 38.2500]},
+        {"station": "stockton"},
+        {"station": "modesto"},
+        {"via": [-120.8500, 37.5000]},
+        {"station": "merced"},
+        {"via": [-120.4000, 37.0000]},
+        {"via": [-120.0600, 36.9600]},
+        {"station": "fresno"},
+        {"station": "kings-tulare"},
+        {"via": [-119.2400, 35.7700]},
+        {"station": "bakersfield"},
+        {"via": [-118.9200, 34.9300]},
+        {"via": [-118.6200, 34.4900]},
+        {"via": [-118.4500, 34.3100]},
+        {"via": [-118.3100, 34.1800]},
+        {"station": "la-union"}
+      ]
+    },
+    {
       "id": "hsr-south",
       "name": "HSR South (LA–San Diego)",
       "headway": "20 min",
