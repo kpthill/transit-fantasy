@@ -242,6 +242,7 @@ export async function directions(o, d) {
   if (dOff) results.push({ mode: 'Drive (off-peak)', ...dOff });
   if (dPeak) results.push({ mode: 'Drive (peak)', ...dPeak });
   if (tOff) results.push({ mode: 'Transit today (off-peak)', ...tOff });
+  else results.push({ mode: 'Transit today', minutes: NaN, note: 'no practical route (10 h+)' });
   if (tPeak) results.push({ mode: 'Transit today (peak)', ...tPeak });
   if (straight > 100) {
     const f = await flyMode(o, d);

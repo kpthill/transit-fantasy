@@ -44,13 +44,14 @@ def build(period):
             sp.setdefault(key, []).append(r["mph"])
     sp = {k: sum(v) / len(v) for k, v in sp.items()}
 
-    # stop membership by (agency, route_id)
-    members = {}
+    # stop-route membership: the stops dataset's route_ids_served field is
+    # blank in practice, so assign geometrically — a stop belongs to a
+    # route when it's the same agency and within ~40 m of the route shape.
+    by_agency = {}
+    ACELL = 0.001
     for i, s in enumerate(stops):
-        for rid in s["routes"]:
-            rid = rid.strip()
-            if rid:
-                members.setdefault((s["agency"], rid), []).append(i)
+        by_agency.setdefault(s["agency"], {}).setdefault(
+            (int(s["lon"] / ACELL), int(s["lat"] / ACELL)), []).append(i)
 
     # wait (min) charged when boarding at a stop
     wait = []
@@ -63,31 +64,55 @@ def build(period):
 
     adj = [[] for _ in range(len(stops))]
     n_edges = 0
+    NEAR_M = 40.0
     for r in routes:
-        key = (r["agency"], r["route_id"])
-        idxs = members.get(key)
-        if not idxs or len(idxs) < 2:
+        agrid = by_agency.get(r["agency"])
+        if not agrid:
             continue
         shape = r["shape"]
-        # arc positions along shape
-        arc = [0.0]
-        for a, b in zip(shape, shape[1:]):
-            arc.append(arc[-1] + dist_m(a[0], a[1], b[0], b[1]))
-        def arcpos(x, y):
-            best, bi = 1e18, 0
-            for k in range(len(shape)):
-                d = dist_m(x, y, shape[k][0], shape[k][1])
-                if d < best:
-                    best, bi = d, k
-            return arc[bi], best
-        seq = []
-        for i in idxs:
-            s = stops[i]
-            pos, off = arcpos(s["lon"], s["lat"])
-            if off < 500:
-                seq.append((pos, i))
-        seq.sort()
-        mph = sp.get(key) or DEFAULT_MPH.get(r["route_type"], 12)
+        # walk segments, gather candidate stops from grid cells, project
+        found = {}  # stop idx -> arc position
+        acc = 0.0
+        for si in range(len(shape) - 1):
+            ax, ay = shape[si]
+            bx, by = shape[si + 1]
+            seg = dist_m(ax, ay, bx, by)
+            cells = set()
+            steps = max(1, int(seg / 80))
+            for t in range(steps + 1):
+                px = ax + (bx - ax) * t / steps
+                py = ay + (by - ay) * t / steps
+                cells.add((int(px / ACELL), int(py / ACELL)))
+            for cx, cy in cells:
+                for dx in (-1, 0, 1):
+                    for dy in (-1, 0, 1):
+                        for j in agrid.get((cx + dx, cy + dy), ()):
+                            s = stops[j]
+                            # project onto segment
+                            l2 = seg * seg
+                            if l2 == 0:
+                                continue
+                            c = math.cos(math.radians(ay))
+                            vx = (bx - ax) * 111320 * c
+                            vy = (by - ay) * 110540
+                            wx = (s["lon"] - ax) * 111320 * c
+                            wy = (s["lat"] - ay) * 110540
+                            t_ = max(0.0, min(1.0, (vx * wx + vy * wy) / (vx * vx + vy * vy)))
+                            d = math.hypot(wx - t_ * vx, wy - t_ * vy)
+                            if d <= NEAR_M:
+                                pos = acc + t_ * seg
+                                if j not in found or d < found[j][1]:
+                                    found[j] = (pos, d)
+            acc += seg
+        if len(found) < 2:
+            continue
+        seq = sorted((pos, j) for j, (pos, d) in found.items())
+        key = (r["agency"], r["route_id"])
+        try:
+            rtype = int(r["route_type"])
+        except (TypeError, ValueError):
+            rtype = 3
+        mph = sp.get(key) or DEFAULT_MPH.get(rtype, 12)
         mpm = mph * 1609.34 / 60
         for (pa, ia), (pb, ib) in zip(seq, seq[1:]):
             ride = (pb - pa) / mpm + DWELL_MIN

@@ -163,7 +163,8 @@ import('./directions.js').then(({ directions }) => {
   const pts = { origin: null, dest: null };
   let arming = null;
   const markers = {};
-  const fmt = (m) => m >= 90 ? `${Math.floor(m / 60)} h ${Math.round(m % 60)} min` : `${Math.round(m)} min`;
+  const fmt = (m) => Number.isNaN(m) ? '—'
+    : m >= 90 ? `${Math.floor(m / 60)} h ${Math.round(m % 60)} min` : `${Math.round(m)} min`;
 
   function arm(which, btn) {
     arming = which;
