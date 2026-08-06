@@ -5,7 +5,9 @@
 // and timed transfers); tier-1 grids use the analytic model (spec §3.5).
 
 const WALK_KMH = 4.8, DETOUR = 1.3;
-const TAXI_HAIL_MIN = 4, LOCAL_DRIVE_KMH = 42;
+const TAXI_HAIL_MIN = 5, LOCAL_DRIVE_KMH = 34;
+// mode choice: prefer the network unless taxi saves >8 min AND >25%
+const TAXI_WIN_MIN = 8, TAXI_WIN_RATIO = 0.75;
 const LOCAL_ONLY_KM = 15;
 const K_SNAP = 3;
 const FLY = { cruiseKmh: 780, fixedMin: 30 + 75 + 20, minKm: 150 };
@@ -26,7 +28,24 @@ async function ensureData() {
     state.anchors = a.anchors;
     state.network = n;
     state.airports = ap.airports;
+    // tier-1 grid stations, for real walk-to-station distances
+    await Promise.all(n.grids.map(async (g) => {
+      const fc = await getJson(`data/${g.file}`).catch(() => null);
+      state.grids[g.slug] = fc
+        ? fc.features.filter((f) => f.properties.ftype === 'station')
+            .map((f) => ({ lon: f.geometry.coordinates[0], lat: f.geometry.coordinates[1] }))
+        : [];
+    }));
   }
+}
+
+function nearestGridStation(p, g) {
+  let best = Infinity;
+  for (const s of state.grids[g.slug] || []) {
+    const d = km(p, s);
+    if (d < best) best = d;
+  }
+  return best; // km to nearest tier-1 station
 }
 
 function km(a, b) {
@@ -122,28 +141,36 @@ function gridFor(p) {
   return null;
 }
 
-function tier1Time(p, q) {
-  // analytic grid leg p->q (both should be near/in the same grid)
+function tier1Time(p, q, g, qIsStation) {
+  // analytic grid leg p->q using the REAL nearest-station walk at p (and
+  // at q unless q is itself a network station, which is a tier-1 node)
   const t1 = state.network.tier1;
   const c = Math.cos(((p.lat + q.lat) / 2) * Math.PI / 180);
   const dx = Math.abs(p.lon - q.lon) * 111.32 * c;
   const dy = Math.abs(p.lat - q.lat) * 110.54;
-  const walk = 0.4 * DETOUR / WALK_KMH * 60 * 2; // ~400 m to/from stations
+  const walkIn = walkMin(Math.min(nearestGridStation(p, g), 2.5));
+  const walkOut = qIsStation ? 1.5 : walkMin(Math.min(nearestGridStation(q, g), 2.5));
   const ride = (dx + dy) / t1.effective_kmh * 60;
   const transfer = (dx > 0.7 && dy > 0.7) ? t1.transfer_min : 0;
-  return walk + t1.headway_min + ride + transfer;
+  return walkIn + t1.headway_min + ride + transfer + walkOut;
 }
 
 function accessLeg(p, st) {
-  // best access from point to a tier2/3 station: walk, taxi, or tier-1 ride
+  // best access from point to a tier2/3 station: walk, taxi, or tier-1
+  // ride — with a mode-choice bias: people near a station take the train
+  // unless a taxi wins by a lot.
   const d = km(p, st);
   const opts = [];
   if (d <= 2.0) opts.push({ min: walkMin(d), how: 'walk' });
-  opts.push({ min: taxiMin(d), how: 'taxi' });
+  const taxi = { min: taxiMin(d), how: 'taxi' };
   const g = gridFor(p);
-  if (g && gridFor(st)) opts.push({ min: tier1Time(p, st), how: 'metro' });
+  if (g && gridFor(st)) opts.push({ min: tier1Time(p, st, g, true), how: 'metro' });
   opts.sort((a, b) => a.min - b.min);
-  return opts[0];
+  const bestNonTaxi = opts[0];
+  if (!bestNonTaxi) return taxi;
+  if (taxi.min < bestNonTaxi.min * TAXI_WIN_RATIO &&
+      taxi.min < bestNonTaxi.min - TAXI_WIN_MIN) return taxi;
+  return bestNonTaxi;
 }
 
 function fantasyRoute(o, d) {
@@ -228,7 +255,7 @@ function fantasyRoute(o, d) {
   const go = gridFor(o), gd = gridFor(d);
   let pure = null;
   if (go && gd && go.slug === gd.slug) {
-    const t = tier1Time(o, d);
+    const t = tier1Time(o, d, go, false);
     pure = { minutes: t, legs: [{ type: 'metro (city grid)', to: 'destination', min: t }] };
   }
   const hasRide = out.some((l) => l.type === 'ride');
